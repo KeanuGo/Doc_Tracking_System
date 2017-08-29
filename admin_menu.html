@@ -1,0 +1,25 @@
+<?php 
+    session_start();
+    if(!isset($_SESSION['logined']) || $_SESSION['logined'] === FALSE){
+        header("Location: admin_login.html");
+        die();
+    }
+?>
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>Sign-In</title>
+</head>
+<body id="body-color">
+	<div id="Sign-In">
+	<fieldset style="width:30%"><legend>MENU</legend>
+		<form action="user_enrollment.html", method="POST" action="logout.php">
+		<input id="button" type="submit" name="submit" value="Enroll a User">
+		</form>
+		<form method="POST" action="logout.php">
+		<input id="button" type="submit" name="submit" value="Log-Out">
+		</form>
+	</fieldset>
+	</div>
+</body>
+</html> 
