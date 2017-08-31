@@ -23,7 +23,10 @@ function SignIn()
 		$row = $query->fetch_assoc();
 		if(!empty($row['username']) AND !empty($row['password']))
 		{
-			$_SESSION['username'] = $row['password'];
+			session_regenerate_id();
+			$_SESSION['who'] = 'users';
+			$_SESSION['username'] = $row['username'];
+			$_SESSION['password'] = $row['password'];
 			$_SESSION['logined']= True;
 			header("Location:user_menu.html");
 
