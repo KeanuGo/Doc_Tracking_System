@@ -1,6 +1,6 @@
 <?php 
     session_start();
-    if(!isset($_SESSION['logined']) || $_SESSION['logined'] === FALSE){
+    if((!isset($_SESSION['logined']) || $_SESSION['logined'] === FALSE)||$_SESSION['who']=='admin'){
         header("Location: user_login.html");
         die();
     }
