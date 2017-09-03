@@ -1,0 +1,131 @@
+<?php
+	session_start();
+    if((!isset($_SESSION['logined']) || $_SESSION['logined'] === FALSE)||$_SESSION['who']=='admin'){
+        header("Location: user_login.html");
+        die();
+    }
+	define('DB_HOST', 'localhost');
+	define('DB_NAME', 'document_tracking_system');
+	define('DB_USER','root');
+	define('DB_PASSWORD','1_Quick_Brown_Fox');
+	
+	$con=new mysqli(DB_HOST,DB_USER,DB_PASSWORD,DB_NAME);
+	if ($con->connect_errno) {
+		echo "Failed to connect to MySQL: (" . $con->connect_errno . ") " . $con->connect_error;
+	}
+	$query = $con->query("SELECT doc_code, doc_name from doc_code_list ORDER BY doc_code_id");
+?>
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>Add Document</title>
+<link rel="stylesheet" type="text/css" href="style-sign.css">
+</head>
+<body id="body-color">
+	<div>
+	<center>
+	<fieldset style="width:10%"><legend>Registration Form</legend>
+		<form method="POST" action="">
+		<table border="0">
+		<tr>
+		<td>Reference date</td><td> <input type="date" name="ref_date"></td>
+		</tr>
+		<tr>
+		<td>Incoming Document?</td><td>Yes<input type="radio" id="external_radio" name="external" value="Yes" onclick="handleClick(this)">No<input type="radio" name="external" value="No" onclick="handleClick(this)"></td>
+		</tr>
+		<tbody id="external_doc_form">
+		<tr>
+		<td>Sender</td><td> <input type="text" name="sender"></td>
+		</tr>
+		<tr>
+		<td>Date Received</td><td> <input type="date" name="date_received"></td>
+		</tr>
+		</tbody>
+		<script type='text/javascript'>
+			var external_div = document.getElementById('external_doc_form');
+			external_div.style.display='none';
+			function handleClick(myRadio){
+				if(myRadio.value == "Yes"){
+					external_div.style.display='table-row-group';
+				}else{
+					external_div.style.display='none';
+				}
+			}
+		</script>
+		<tr>
+		<td>Document Type</td><td><input list="doc_type"> <datalist id="doc_type">
+		<?php
+			for($row_no = 1; ($query->num_rows) > $row_no; $row_no++){
+				$query->data_seek($row_no);
+				$row = $query->fetch_assoc();
+				echo'<option value="'.$row['doc_name'].'">'.$row['doc_code'].'</option>';
+		}?>
+		</datalist></td>
+		</tr>
+		</table>
+		<table id="additional_doc_info_table">
+		<tr>
+		<td>Information Type</td><td>Information Value</td>
+		</tr>
+		<tr>
+		<td><input type="text" name="attributeNo0" id="attributeNo0" value = "Attribute0"></td><td><input type="text" name="valueNo0" id="valueNo0" value="Value0"></td><td><input type="button" name="remove0" id="remove0" value="X" onclick="remove_doc_info(this)"></td>
+		</tr>
+		<tr>
+		<td><input type="button" id="button2" name="add_doc_info" value="Add Document Information" onclick="add_doc_info_function()"></td>
+		</tr>
+		</table>
+		<script type='text/javascript'>
+			var doc_info_table = document.getElementById("additional_doc_info_table");
+			var row_count;
+			row_count = 1;
+			function add_doc_info_function(){
+				var new_row = doc_info_table.insertRow(row_count+1);
+				var cell1 = new_row.insertCell(0);
+				var cell2 = new_row.insertCell(1);
+				var cell3 = new_row.insertCell(2);
+				//var cell4 = new_row.insertCell(0);
+				cell1.innerHTML = "<input type='text' name='attributeNo" + String(row_count) + "' id='attributeNo" + String(row_count) + "' value='Attribute"+ String(row_count) + "'>";
+				cell2.innerHTML = "<input type='text' name='valueNo" + String(row_count) + "' id='valueNo" + String(row_count) + "' value = 'Value" + String(row_count) + "'>";
+				cell3.innerHTML = "<input type='button' name='remove" + String(row_count) + "' id='remove" + String(row_count) + "' value='X' onclick='remove_doc_info(this)'>";
+				//cell4.innerHTML = "Row " + String(row_count);
+				row_count++;
+			}
+			
+			function remove_doc_info(input){
+				var name = input.getAttribute("name");
+				//window.alert("Trying to find '" + name + "'" + String(row_count));
+				for(var i = 0; i < row_count; i++){
+					var row = document.getElementById("remove"+String(i));
+					//window.alert("Iterate" + String(i) + ". Comparing: " + name + ", " + row.getAttribute("name"));
+					if(!(name.localeCompare(row.getAttribute("name")))){
+						//window.alert("Removing row " + i + ", Row count = " + row_count);
+						for(var j = i; j < row_count-1; j++){
+							var attribType = document.getElementById("attributeNo" + String(j+1));
+							attribType.setAttribute("name", "attributeNo" + String(j));
+							attribType.setAttribute("id", "attributeNo" + String(j));
+							attribType.setAttribute("value", "Attribute" + String(j));
+							var attribVal = document.getElementById("valueNo" + String(j+1));
+							attribVal.setAttribute("name", "valueNo" + String(j));
+							attribVal.setAttribute("id", "valueNo" + String(j));
+							attribVal.setAttribute("value", "Value" + String(j));
+							var removeButton = document.getElementById("remove" + String(j+1));
+							removeButton.setAttribute("name", "remove" + String(j));
+							removeButton.setAttribute("id", "remove" + String(j));
+						}
+						doc_info_table.deleteRow(i+1);
+						row_count--;
+						//window.alert("Removed row " + i + ", New row count = " + row_count);
+						break;
+					}
+				}
+			}
+		</script>
+		<table>
+		<td><input id="button2" type="submit" name="submit" value="Add Document"></td>
+		<td><input id="button2" type="submit" formaction="user_menu.html" name="cancel" value="Back"></td>
+		</table>
+		</form>
+	</fieldset>
+	</div>
+</body>
+</html>
