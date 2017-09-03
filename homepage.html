@@ -4,24 +4,24 @@
 
 	<head> 
 		<link rel = "icon" href = "images/homepage.ico">
-		<title> LEYECO II IAD-DTS </title>
+		<title> LEYECO II IA-DTS </title>
 		<link rel = "stylesheet" type = "text/css" href = "homepage-style.css">
 	</head>
 
 	<body id = "background">
 		<header id = "header" align = "center">
-			LEYECO II Internal Audit Document Tracking System (IAD-DTS)
+			LEYECO II Internal Audit Document Tracking System (IA-DTS)
 		</header>
 
-		<img src = "images/leyeco_logo.png" id = "logo-dimension" align = "left" style = "margin-left: 150px; margin-top: 80px;">
+		<img src = "images/leyeco_logo.png" id = "logo-dimension" align = "left">
 
 		<div align = "center">
 			<fieldset id = "fs">
 				<form type = "submit" method = "POST" action = "user_connectivity.php">	
-					<br> <div align = "left"> &nbsp&nbsp&nbsp&nbspUsername </div>
-					<br> <input type = "text" name = "user" placeholder = "   Sky_123" class = "mytext" size = "80"><br>
-					<br> <div align = "left"> &nbsp&nbsp&nbsp&nbspPassword </div>
-					<br> <input type = "password" name = "pass" placeholder = "   Must contain at least 7 characters" class = "mytext" size = "80"><br><br>
+					<br> <div align = "center"> Username </div>
+					<br> <input type = "text" name = "user" class = "mytext foo" size = "80"><br>
+					<br> <div align = "center"> Password </div>
+					<br> <input type = "password" name = "pass" class = "mytext foo" size = "80"><br><br>
 					Log in as:
 					<br><br><button class = "button" formaction = "admin_connectivity.php" name = "admin"> ADMIN </button><br><br>
 					<button class = "button" name = "employee"> EMPLOYEE </button><br><br>
