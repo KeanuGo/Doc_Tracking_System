@@ -36,10 +36,10 @@ function SignIn()
 			echo "SORRY... YOU ENTERD WRONG ID AND PASSWORD... PLEASE RETRY...";
 		}
 	}else{
-		header("Location:user_login.html");
+		header("Location:homepage.html");
 	}
 }
-if(isset($_POST['submit']))
+if(isset($_POST['employee']))
 {
 	SignIn();
 }
