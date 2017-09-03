@@ -9,8 +9,7 @@ if(isset($_POST['submit']))
 		header("Location: admin_login.html");
 	}else{
 		header("Location: user_login.html");
-	}
-	*/
+	}*/
 	session_destroy();
 	die();
 }
