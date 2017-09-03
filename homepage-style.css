@@ -39,6 +39,7 @@
 }
 
 #fs {
+	border-color: yellow;
 	background-color: white;
 	margin-top: 90px;
 	margin-bottom: 10px;
@@ -68,9 +69,21 @@
 	color: white;
 }
 
+#legend {
+	box-shadow: 0 8px rgb(60,60,60);
+	background-color: black;
+	color: yellow;
+
+	font-family: candara;
+	font-size: 30px;
+	border-radius: 10px;
+}
+
 #logo-dimension {
 	width: 400px;
 	height: 400px;
+	margin-left: 150px; 
+	margin-top: 80px;
 }
 
 .mytext {
