@@ -1,45 +1,44 @@
-<!DOCTYPE HTML>
+
 <?php 
     session_start();
-    if((!isset($_SESSION['logined']) || $_SESSION['logined'] === FALSE) ||$_SESSION['who']=='users'){
-        header("Location: admin_login.html");
+    if(!isset($_SESSION['logined']) || $_SESSION['logined'] === FALSE){
+        header("Location: homepage.html");
         die();
     }
 ?>
+
+<!DOCTYPE HTML>
+
 <html>
-<head>
-<title>Sign-Up</title>
-<link rel="stylesheet" type="text/css" href="style-sign.css">
-</head>
-<body id="body-color">
-	<div id="Sign-In">
-	<fieldset style="width:30%"><legend>Registration Form</legend>
-		<table border="0">
-		<tr>
-		<form method="POST" action="user_enroll_connectivity.php">
-		<td>Name</td><td> <input type="text" name="name"></td>
-		</tr>
-		<tr>
-		<td>Email</td><td> <input type="text" name="email"></td>
-		</tr>
-		<tr>
-		<td>UserName</td><td> <input type="text" name="user"></td>
-		</tr>
-		<tr>
-		<td>Password</td><td> <input type="password" name="pass"></td>
-		</tr>
-		<tr>
-		<td>Confirm Password </td><td><input type="password" name="cpass"></td>
-		</tr>
-		<tr>
-		<td><input id="button" type="submit" name="submit" value="Sign-Up"></td>
-		</tr>
-		</form>
-		<form action="admin_menu.html">
-		<input id="button" type="submit" name="submit" value="Back">
-		</form>
-		</table>
-	</fieldset>
-	</div>
-</body>
+	<head>
+		<title> ADMIN: User Registration </title>
+		<link rel="stylesheet" type="text/css" href="homepage-style.css">
+	</head>
+
+	<body id="background">
+		<div align = "center">
+			<fieldset id = "fs"> 
+				<legend id = "legend"> &nbsp Registration Form &nbsp </legend><br>
+					<form method="POST" action="user_enroll_connectivity.php">
+						<div id = "text"> Name </div>
+						<input placeholder = "Restituto Singaw" class = "mytext foo" type="text" name="name" size="80"> 
+						<br><br>
+						<div id = "text"> Email </div>
+						<input placeholder = "rsingaw@gmail.com" class = "mytext foo" type="text" name="email" size="80">
+						<br><br>
+						<div id = "text"> Username </div>
+						<input placeholder = "Resty" class = "mytext foo" type="text" name="user" size="80">
+						<br><br>
+						<div id = "text"> Password </div>
+						<input placeholder = "Must contain at least 7 characters" class = "mytext foo" type="password" name="pass" size="80">
+						<br><br>
+						<div id = "text"> Confirm Password </div>
+						<input placeholder = "Re-type password" class = "mytext foo" type="password" name="cpass" size="80"><br><br>
+
+						<button class = "button" type = "submit" name="submit"> SIGN-UP </button><br><br>
+						<button class="button" type="submit" name="submit" formaction = "admin_menu.html"> BACK </button><br><br>
+					</form>
+			</fieldset>
+		</div>
+	</body>
 </html>
