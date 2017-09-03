@@ -1,25 +1,28 @@
 <?php 
     session_start();
-    if((!isset($_SESSION['logined']) || $_SESSION['logined'] === FALSE) ||$_SESSION['who']=='users'){
+    if(!isset($_SESSION['logined']) || $_SESSION['logined'] === FALSE){
         header("Location: homepage.html");
         die();
     }
 ?>
 <!DOCTYPE HTML>
+
 <html>
-<head>
-<title>Sign-In</title>
-</head>
-<body id="body-color">
-	<div id="Sign-In">
-	<fieldset style="width:30%"><legend>MENU</legend>
-		<form action="user_enrollment.html", method="POST" action="logout.php">
-		<input id="button" type="submit" name="submit" value="Enroll a User">
-		</form>
-		<form method="POST" action="logout.php">
-		<input id="button" type="submit" name="submit" value="Log-Out">
-		</form>
-	</fieldset>
-	</div>
-</body>
+	<head>
+		<title> ADMIN Server </title>
+		<link rel = "stylesheet" type = "text/css" href = "homepage-style.css">
+	</head>
+
+	<body id = "background">
+		<div align = "center">
+			<fieldset id = "fs">
+				<legend id = "legend"> &nbsp ADMIN MENU &nbsp </legend>
+					<form type="submit" action="user_enrollment.html" method="POST">
+						<br><img src = "images/leyeco_logo.png" align = "center" style = "width: 100px; height: 100px">
+						<br><br><br><button class="button"> ENROLL USER (s) </button><br><br>
+						<button class="button" name = "log-out" formaction = "logout.php"> LOG-OUT </button><br><br>
+					</form>
+			</fieldset>
+		</div>
+	</body>
 </html> 
