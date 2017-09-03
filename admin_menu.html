@@ -1,7 +1,7 @@
 <?php 
     session_start();
     if((!isset($_SESSION['logined']) || $_SESSION['logined'] === FALSE) ||$_SESSION['who']=='users'){
-        header("Location: admin_login.html");
+        header("Location: homepage.html");
         die();
     }
 ?>
