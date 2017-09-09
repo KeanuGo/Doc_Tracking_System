@@ -22,6 +22,7 @@ function NewUser()
 	if($data)
 	{
 	echo "YOUR REGISTRATION IS COMPLETED...";
+	header("Refresh: 2; URL=admin_menu.html");
 	}
 }
 
@@ -41,11 +42,13 @@ function SignUp()
 				else
 				{
 					echo "PASSWORD DOES NOT MATCH";
+					header("Refresh: 2; URL=user_enrollment.html");
 				}
 			}
 			else
 			{
 				echo "SORRY...YOU ARE ALREADY REGISTERED USER...";
+				header("Refresh: 2; URL=admin_menu.html");
 			}
 		}
 		else
