@@ -34,6 +34,7 @@ function SignIn()
 		else
 		{
 			echo "SORRY... YOU ENTERED WRONG ID AND PASSWORD... PLEASE RETRY...";
+			header("Refresh: 2; URL=homepage.html");
 		}
 	}else{
 		header("Location:homepage.html");
