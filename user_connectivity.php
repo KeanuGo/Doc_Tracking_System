@@ -33,7 +33,8 @@ function SignIn()
 		}
 		else
 		{
-			echo "SORRY... YOU ENTERD WRONG ID AND PASSWORD... PLEASE RETRY...";
+			echo "SORRY... YOU ENTERED WRONG ID AND PASSWORD... PLEASE RETRY...";
+			header("Refresh: 2; URL=homepage.html");
 		}
 	}else{
 		header("Location:homepage.html");
