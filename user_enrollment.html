@@ -19,24 +19,36 @@
 		<div align = "center">
 			<fieldset id = "fs"> 
 				<legend id = "legend"> &nbsp Registration Form &nbsp </legend><br>
-					<form method="POST" action="user_enroll_connectivity.php">
-						<div id = "text"> Name </div>
-						<input placeholder = "Restituto Singaw" class = "mytext foo" type="text" name="name" size="80"> 
+					<form method="POST">
+						<div class = "text"> Name </div>
+						<input id = "fname" placeholder = "Restituto Singaw" class = "mytext foo" type="text" name="name" size="80"> 
 						<br><br>
-						<div id = "text"> Email </div>
-						<input placeholder = "rsingaw@gmail.com" class = "mytext foo" type="text" name="email" size="80">
+						<div class = "text"> Email </div>
+						<input id = "email" placeholder = "rsingaw@gmail.com" class = "mytext foo" type="text" name="email" size="80">
 						<br><br>
-						<div id = "text"> Username </div>
-						<input placeholder = "Resty" class = "mytext foo" type="text" name="user" size="80">
+						<div class = "text"> Username </div>
+						<input id = "uname" placeholder = "Resty" class = "mytext foo" type="text" name="user" size="80">
 						<br><br>
-						<div id = "text"> Password </div>
-						<input placeholder = "Must contain at least 7 characters" class = "mytext foo" type="password" name="pass" size="80">
-						<br><br>
-						<div id = "text"> Confirm Password </div>
-						<input placeholder = "Re-type password" class = "mytext foo" type="password" name="cpass" size="80"><br><br>
+						<div id = "passtxt" class = "text"> Password </div>
+						<input id = "password" placeholder = "Must contain at least 7 characters" class = "mytext foo" type="password" name="pass" size="80">
+						<br><div id = "ptxt">  </div><br>
+						<div id = "cpasstxt" class = "text"> Confirm Password </div>
+						<input id = "cpassword" placeholder = "Re-type password" class = "mytext foo" type="password" name="cpass" size="80"><br><div id = "ctxt">  </div><br>
 
-						<button class = "button" type = "submit" name="submit"> SIGN-UP </button><br><br>
+						<button id = "s-up-button" class = "button" type = "submit" name="sign-up" onclick = "confirmPass()"> SIGN-UP </button><br><br>
 						<button class="button" type="submit" name="submit" formaction = "admin_menu.html"> BACK </button><br><br>
+
+						<script type = "text/javascript">
+							/*var xhttp = new XMLHttpRequest();*/
+							function confirmPass() {
+								if((document.getElementById("password").value == "") && 
+								   (document.getElementById("cpassword").value == "")) {
+									document.getElementById("ptxt").innerHTML = "Password is required.";
+								}else{
+									document.getElementById("ctxt").innerHTML = "Password does not match. Try again.";
+								}
+							}
+						</script>
 					</form>
 			</fieldset>
 		</div>
