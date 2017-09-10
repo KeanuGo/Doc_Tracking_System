@@ -50,13 +50,21 @@
 <body id="background">
 	<div align="center">
 	<fieldset id="fs"><legend id="legend"> &nbsp Document Form &nbsp </legend>
-		<form type="submit" action="add_document.php" method="POST">
+		<p id = "status"></p>
+		<form type="submit" action="add_document.php" method="POST" onsubmit="return checkInputs(this.submited)">
 		<table border="0"  cellspacing="0">
 		<tr>
-		<td>Reference date</td><td> <input type="date" name="ref_date" class="mytext foo" size="80"></td>
+		<td>Reference date</td><td> <input type="date" name="ref_date" class="mytext foo" size="80" onblur="checkDateReceived(this)"></td>
 		</tr>
+		<script type='text/javascript'>
+			/*set minimum date for date received once reference date is entered*/
+			function checkDateReceived(date_received){
+				var ref_date = document.getElementsByName("ref_date")[0];
+				date_received.setAttribute("min", ref_date.value);
+			}
+		</script>
 		<tr>
-		<td>Incoming Document?</td><td>Yes<input type="radio" id="external_radio" name="external" value="Yes" onclick="handleClick(this)">No<input type="radio" name="external" value="No" onclick="handleClick(this)"></td>
+		<td>Incoming Document?</td><td>Yes<input type="radio" name="external" value="Yes" onclick="handleClick(this)" id="external_yes">No<input type="radio" name="external" value="No" onclick="handleClick(this)" id="external_no"></td>
 		</tr>
 		<tbody id="external_doc_form">
 		<tr>
@@ -73,6 +81,7 @@
 		</tr>
 		</tbody>
 		<script type='text/javascript'>
+			/*code for toggle hide or show incoming documents form shows if "Yes" is specified in "External?" hides it otherwise*/
 			var external_div = document.getElementById('external_doc_form');
 			external_div.style.display='none';
 			function handleClick(myRadio){
@@ -86,6 +95,7 @@
 		<tr>
 		<td>Document Type</td><td><input list="doc_type" name="doc_type" class="mytext foo" size="80"> <datalist id="doc_type">
 		<?php
+			#gets all the known document types in database
 			$query = $con->query("SELECT doc_code, doc_name from doc_code_list ORDER BY doc_code_id");
 			for($row_no = 1; ($query->num_rows) > $row_no; $row_no++){
 				$query->data_seek($row_no);
@@ -106,7 +116,7 @@
 		</tr>
 		<tr><td></td><td></td></tr>
 		<tr>
-		<td><input type="button" id="button2" name="add_doc_info" value="Add Document Information" onclick="add_doc_info_function()" class="button"></td>
+		<td colspan="2" align="center"><input type="button" id="button2" name="add_doc_info" value="Add Document Information" onclick="add_doc_info_function()" class="button"></td>
 		</tr>
 		</table>
 		<input type="text" name="doc_info_row_count" id="row_count_field" value="1" style="display:none">
@@ -114,6 +124,7 @@
 			var doc_info_table = document.getElementById("additional_doc_info_table");
 			var row_count;
 			row_count = 1;
+			/*function below adds 2 new textfield for info type and info value*/
 			function add_doc_info_function(){
 				var new_row = doc_info_table.insertRow(row_count+1);
 				var cell1 = new_row.insertCell(0);
@@ -129,6 +140,7 @@
 				row_count_field.setAttribute("value", row_count);
 			}
 			
+			/*function below removes the text fields in the row the x button is clicked*/
 			function remove_doc_info(input){
 				var name = input.getAttribute("name");
 				//window.alert("Trying to find '" + name + "'" + String(row_count));
@@ -162,10 +174,55 @@
 		</script>
 		<br>
 		<table>
-		<td><input id="button2" type="submit" name="submit" value="Add Document" class="button"></td>
-		<td><input id="button2" type="submit" formaction="user_menu.html" name="cancel" value="Back" class="button"></td>
+		<td><input id="button2" type="submit" name="submit" value="Add Document" class="button" onclick="this.form.submited=this.value"></td>
+		<td><input id="button2" type="submit" formaction="user_menu.html" name="cancel" value="Back" class="button" onclick="this.form.submited=this.value"></td>
 		</table>
 		</form>
+		<script type='text/javascript'>
+			/*checks the empty fields*/
+			function checkInputs(button_clicked){
+				if(button_clicked == "Back"){
+					return true;
+				}
+				var if_valid = true;
+				var message = "";
+				if(document.getElementsByName("ref_date")[0].value==""){
+					message += "Reference Date cannot be empty\n";
+					if_valid = false;
+				}
+				if(!(document.getElementById("external_yes").checked) && !(document.getElementById("external_no").checked)){
+					message += "Specify if externally created document or not\n";
+					if_valid = false;
+				}else if(document.getElementById("external_yes").checked){
+					if(document.getElementsByName("sender")[0].value==""){
+						message += "Sender cannot be empty\n";
+						if_valid = false;
+					}
+					if(document.getElementsByName("date_received")[0].value==""){
+						message += "Date Received cannot be empty\n";
+						if_valid = false;
+					}
+					if(document.getElementsByName("particulars")[0].value==""){
+						message += "Particulars cannot be empty\n";
+						if_valid = false;
+					}
+				}
+				if(document.getElementsByName("doc_type")[0].value==""){
+					message += "Specify the document type\n";
+					if_valid = false;
+				}
+				for(var i = 0; i <row_count; i++){
+					if((!document.getElementById("attributeNo" + String(i)).value=="" && document.getElementById("valueNo" + String(i)).value=="") || (document.getElementById("attributeNo" + String(i)).value=="" && !document.getElementById("valueNo" + String(i)).value=="")){
+						message += "Additional information number " + (i+1) + " has an empty field\n";
+						if_valid = false;
+					}
+				}
+				if(!if_valid){
+					window.alert(message);
+				}
+				return if_valid;
+			}
+		</script>
 	</fieldset>
 	</div>
 </body>
