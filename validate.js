@@ -1,5 +1,5 @@
 
-function ValidatePassword() {
+function ValidateEnrollment() {
 	var name = document.getElementById("name").value;
 	var uname = document.getElementById("uname").value;
 	var email = document.getElementById("email").value;
