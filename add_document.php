@@ -88,7 +88,7 @@ function addDocument(){
 		}
 	}
 	
-	header("Refresh: 5; URL=user_menu.html");
+	header("Refresh: 1; URL=user_menu.html");
 }
 
 if(isset($_POST['submit'])){
