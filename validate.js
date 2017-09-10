@@ -5,7 +5,7 @@ function ValidateEnrollment() {
 	var email = document.getElementById("email").value;
 	var pass = document.getElementById("password").value;
 	var cpass = document.getElementById("cpassword").value;
-	var emailExpression = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+	var emailExpression = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
 	if(name != "" && uname != "" && email != "" && pass != "" && cpass != "") {
 		if(email.match(emailExpression)) {
