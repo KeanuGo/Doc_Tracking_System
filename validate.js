@@ -5,16 +5,22 @@ function ValidateEnrollment() {
 	var email = document.getElementById("email").value;
 	var pass = document.getElementById("password").value;
 	var cpass = document.getElementById("cpassword").value;
+	var emailExpression = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
 
 	if(name != "" && uname != "" && email != "" && pass != "" && cpass != "") {
-		if(pass.length < 7) {
-			alert("Password too weak.");
-			return false;
-		}else if(pass != cpass) {
-			alert("Password does not match. Try Again.");
+		if(email.match(emailExpression)) {
+			if(pass.length < 7) {
+				alert("Password too weak.");
+				return false;
+			}else if(pass != cpass) {
+				alert("Password does not match. Try Again.");
+				return false;
+			}
+			return true;
+		}else{
+			alert("Invalid e-mail address!");
 			return false;
 		}
-		return true;
 	}else{
 		alert("All fields must filled up.");
 		return false;
