@@ -1,0 +1,47 @@
+<?php
+	session_start();
+    if((!isset($_SESSION['logined']) || $_SESSION['logined'] === FALSE) ||$_SESSION['who']=='users'){
+        header("Location: homepage.html");
+        die();
+    }
+	define('DB_HOST', 'localhost');
+	define('DB_NAME', 'document_tracking_system');
+	define('DB_USER','root');
+	define('DB_PASSWORD','');
+	
+	$con=new mysqli(DB_HOST,DB_USER,DB_PASSWORD,DB_NAME);
+	if ($con->connect_errno) {
+		echo "Failed to connect to MySQL: (" . $con->connect_errno . ") " . $con->connect_error;
+	}
+?>
+<!DOCTYPE html>
+<html>
+   <body>
+   <div class="panel-heading">User Details</div>
+    <div id="user_details" class="panel-body">
+	</div>
+</body>
+</html>
+<script type="text/javascript" src="jquery.js"></script>
+<script>
+$(document).ready(function(){
+		views();
+		setInterval(function(){views()}, 3000);
+		
+		function views(){
+			var action = 'fetch_data';
+			$.ajax({
+			
+			url:"view_users.php",
+			method:"POST",
+			data:{action:action},
+			success: function(data)
+			{
+				$('#user_details').html(data);
+			}
+			 
+		});
+		}
+	});	
+
+ </script>

@@ -1,0 +1,36 @@
+<!DOCTYPE HTML>
+<?php 
+    session_start();
+    if((!isset($_SESSION['logined']) || $_SESSION['logined'] === FALSE) ||$_SESSION['who']=='admin'){
+        header("Location: homepage.html");
+        die();
+    }
+?>
+<html>
+<head>
+<title>Sign-Up</title>
+<link rel="stylesheet" type="text/css" href="style-sign.css">
+</head>
+<body id="body-color">
+	<div id="Sign-In">
+	<fieldset style="width:30%"><legend>Document Code</legend>
+		<table border="0">
+		<tr>
+		<form method="POST" action="doc_code_connectivity.php">
+		<td>Document Code</td><td> <input type="text" size = "10" name="document_code"></td>
+		</tr>
+		<tr>
+		<td>Document Name</td><td> <input type="text" size = "30" name="document_name"></td>
+		</tr>
+		<tr>
+		<td><input id="button" type="submit" name="submit" value="Add"></td>
+		</tr>
+		</form>
+		<form action="user_menu.html">
+		<input id="button" type="submit" name="submit" value="Back">
+		</form>
+		</table>
+	</fieldset>
+	</div>
+</body>
+</html>
