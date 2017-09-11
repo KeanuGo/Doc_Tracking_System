@@ -1,6 +1,6 @@
 <?php 
     session_start();
-    if(!isset($_SESSION['logined']) || $_SESSION['logined'] === FALSE){
+    if((!isset($_SESSION['logined']) || $_SESSION['logined'] === FALSE) ||$_SESSION['who']=='users'){
         header("Location: homepage.html");
         die();
     }
@@ -21,6 +21,7 @@
 					<form type="submit" action="user_enrollment.html" method="POST">
 						<br><img src = "images/leyeco_logo.png" align = "center" style = "width: 100px; height: 100px">
 						<br><br><br><button class="button"> ENROLL USER (s) </button><br><br>
+						<button class="button" method="POST" name = "submit" formaction = "view_users.html"> VIEW-USERS </button><br><br>
 						<button class="button" name = "log-out" formaction = "logout.php"> LOG-OUT </button><br><br>
 					</form>
 			</fieldset>
