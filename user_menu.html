@@ -8,14 +8,21 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-<title>Sign-In</title>
+<title>USER</title>
+<link rel = "stylesheet" type = "text/css" href = "homepage-style.css">
 </head>
-<body id="body-color">
-	<fieldset style="width:30%"><legend>MENU</legend>
-		<form method="POST" action="logout.php">
-		<input id="button" type="submit" name="log-out" value="Log-Out">
-		</form>
-	</fieldset>
+<body id="background">
+	<div align = "center">
+		<fieldset id = "fs">
+			<legend id = "legend"> &nbsp&nbspUSER MENU&nbsp&nbsp </legend><br><br>
+			<form method="POST" action="add_document.html">
+				<button class="button" name="add-doc"> Add Document </button><br><br>
+				<button class="button" name="incoming-doc" formaction=""> Incoming Documents </button><br><br>
+				<button class="button" name="outgoing-doc" formaction = ""> Outgoing Documents </button><br><br>
+				<button class="button" name="document-code-list" formaction="doc_code.php"> Document Code List </button><br><br>
+				<button class="button" name="log-out" formaction="logout.php"> Log-Out </button><br><br>
+			</form>
+		</fieldset>
 	</div>
 </body>
 </html> 
