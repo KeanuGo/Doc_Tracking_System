@@ -3,7 +3,10 @@ use document_tracking_system;
 
 create table doc(
 	ID int primary key auto_increment,
-	reference_date date not null);
+	reference_date date not null,
+    reference_no varchar(40),
+    if_incoming enum('Y', 'N') not null,
+    if_od enum('Y', 'N') not null);
 	
 create table doc_code_list(
 	doc_code_id int(3) primary key not null auto_increment,
@@ -24,7 +27,6 @@ create table doc_log(
 	dateReceived_Transmitted date,
 	sender_recipient varchar(30),
 	updated_by varchar(30) not null,
-	date_updated date not null,
 	time_stamp time not null);
 	
 create table employee(
@@ -45,38 +47,3 @@ create table users(
 	email VARCHAR(40) NOT NULL,
 	password VARCHAR(40) NOT NULL, 
 	PRIMARY KEY(userID));
-    
-use document_tracking_system;
-CREATE VIEW `Incoming_Doc_Log` AS
-select doc_log.doc_id as ID,
-	concat('IN', convert(doc_log.doc_id, char(5))) as Incoming_ID,
-	doc_log.dateReceived_Transmitted,
-	doc_log.sender_recipient,
-	doc_code_list.doc_code,
-	doc.reference_date,
-	doc_log.remarks_particulars
-from 
-	doc_log, doc_code_list, doc, doc_info
-where
-	doc.id = doc_info.id and
-    doc_info.doc_code_id = doc_code_list.doc_code_id and
-    doc_log.status='IN';
-    
-use document_tracking_system;
-CREATE VIEW `Outgoing_Doc_Log` AS
-select doc_log.doc_id,
-	concat('OUT', convert(doc_log.doc_id, CHAR(5))) as Outgoing_ID,
-	incoming_doc_log.Incoming_ID,
-	doc_log.dateReceived_Transmitted,
-	doc_log.sender_recipient,
-	doc_code_list.doc_code,
-	doc.reference_date,
-	doc_log.remarks_particulars
-from 
-	doc_log, doc_code_list, doc, doc_info, incoming_doc_log
-where
-	incoming_doc_log.ID = doc_log.doc_id and
-	doc.id = doc_info.id and
-    doc_info.doc_code_id = doc_code_list.doc_code_id and
-    doc_log.status='OUT';
-    
