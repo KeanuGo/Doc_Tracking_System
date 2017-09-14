@@ -7,7 +7,7 @@
 	define('DB_HOST', 'localhost');
 	define('DB_NAME', 'document_tracking_system');
 	define('DB_USER','root');
-	define('DB_PASSWORD','1_Quick_Brown_Fox');
+	define('DB_PASSWORD','');
 	
 	$con=new mysqli(DB_HOST,DB_USER,DB_PASSWORD,DB_NAME);
 	if ($con->connect_errno) {
@@ -51,33 +51,26 @@
 	<div align="center">
 	<fieldset id="fs"><legend id="legend"> &nbsp Document Form &nbsp </legend>
 		<p id = "status"></p>
-		<form type="submit" action="add_document.php" method="POST" onsubmit="return checkInputs(this.submited)">
+		<form type="submit" action="add_document.php" method="POST" onsubmit="return checkInputs(this.submited)" id="myForm">
 		<table border="0"  cellspacing="0">
 		<tr>
-		<td>Reference date</td><td> <input type="date" name="ref_date" class="mytext foo" size="80" onblur="checkDateReceived(this)"></td>
+		<td>Reference date</td><td> <input type="date" name="ref_date" class="mytext foo" size="80"></td>
 		</tr>
-		<script type='text/javascript'>
-			/*set minimum date for date received once reference date is entered*/
-			function checkDateReceived(date_received){
-				var ref_date = document.getElementsByName("ref_date")[0];
-				date_received.setAttribute("min", ref_date.value);
-			}
-		</script>
 		<tr>
-		<td>Incoming Document?</td><td>Yes<input type="radio" name="external" value="Yes" onclick="handleClick(this)" id="external_yes">No<input type="radio" name="external" value="No" onclick="handleClick(this)" id="external_no"></td>
+		<td>Incoming/Outgoing?</td><td>Incoming<input type="radio" name="in_or_od" value="Incoming" onclick="handleClick(this)" id="external_yes">Outgoing<input type="radio" name="in_or_od" value="Outgoing" onclick="handleClick(this)" id="external_no">N/A<input type="radio" name="in_or_od" value="not_in_or_od" onclick="handleClick(this)" id="external_none"></td>
 		</tr>
 		<tbody id="external_doc_form">
 		<tr>
-		<td colspan="2" align="center" class="left top right">Incoming Document Form</td>
+		<td colspan="2" align="center" class="left top right" id="IO_form_title">Incoming Document Form</td>
 		</tr>
 		<tr>
-		<td class="left">Sender</td><td class="right"> <input type="text" name="sender" class="mytext foo" size="80"></td>
+		<td class="left" id="sr_label">Sender</td><td class="right"> <input type="text" name="sender_recipient" class="mytext foo" size="80"></td>
 		</tr>
 		<tr>
-		<td class="left">Date Received</td><td class="right"> <input type="date" name="date_received" class="mytext foo" size="80"></td>
+		<td class="left" id="drt_label">Date Received</td><td class="right"> <input type="date" name="date_received_transmitted" class="mytext foo" size="80"></td>
 		</tr>
 		<tr>
-		<td class="left bottom">Particulars</td><td class="right bottom"> <input type="text" name="particulars" class="mytext foo" size="80"></td>
+		<td class="left bottom" id="pr_label">Particulars</td><td class="right bottom"> <input type="text" name="remarks_particulars" class="mytext foo" size="80"></td>
 		</tr>
 		</tbody>
 		<script type='text/javascript'>
@@ -85,9 +78,18 @@
 			var external_div = document.getElementById('external_doc_form');
 			external_div.style.display='none';
 			function handleClick(myRadio){
-				if(myRadio.value == "Yes"){
-					external_div.style.display='table-row-group';
-				}else{
+				external_div.style.display='table-row-group';
+				if(myRadio.value == "Incoming"){
+					document.getElementById("IO_form_title").innerHTML = "Incoming Document Form";
+					document.getElementById("sr_label").innerHTML = "Sender";
+					document.getElementById("drt_label").innerHTML = "Date Received";
+					document.getElementById("pr_label").innerHTML = "Particulars";
+				}else if(myRadio.value == "Outgoing"){
+					document.getElementById("IO_form_title").innerHTML = "Outgoing Document Form";
+					document.getElementById("sr_label").innerHTML = "Recipient";
+					document.getElementById("drt_label").innerHTML = "Date Transmitted";
+					document.getElementById("pr_label").innerHTML = "Remarks";
+				}else if(myRadio.value == "not_in_or_od"){
 					external_div.style.display='none';
 				}
 			}
@@ -182,45 +184,59 @@
 			/*checks the empty fields*/
 			function checkInputs(button_clicked){
 				if(button_clicked == "Back"){
+					document.getElementById("myForm").reset();
 					return true;
-				}
-				var if_valid = true;
-				var message = "";
-				if(document.getElementsByName("ref_date")[0].value==""){
-					message += "Reference Date cannot be empty\n";
-					if_valid = false;
-				}
-				if(!(document.getElementById("external_yes").checked) && !(document.getElementById("external_no").checked)){
-					message += "Specify if externally created document or not\n";
-					if_valid = false;
-				}else if(document.getElementById("external_yes").checked){
-					if(document.getElementsByName("sender")[0].value==""){
-						message += "Sender cannot be empty\n";
+				}else{
+					var if_valid = true;
+					var message = "";
+					if(document.getElementsByName("ref_date")[0].value==""){
+						message += "Reference Date cannot be empty\n";
 						if_valid = false;
 					}
-					if(document.getElementsByName("date_received")[0].value==""){
-						message += "Date Received cannot be empty\n";
+					if(!(document.getElementById("external_yes").checked) && !(document.getElementById("external_no").checked) && !(document.getElementById("external_none").checked)){
+						message += "Specify if externally/internally created document or not\n";
+						if_valid = false;
+					}else if(document.getElementById("external_yes").checked || document.getElementById("external_no").checked){
+						if(document.getElementsByName("sender_recipient")[0].value==""){
+							if(document.getElementById("external_yes").checked){
+								message += "Sender cannot be empty\n";
+							}else if(document.getElementById("external_no").checked){
+								message += "Recipient cannot be empty\n";
+							}
+							if_valid = false;
+						}
+						if(document.getElementsByName("date_received_transmitted")[0].value==""){
+							if(document.getElementById("external_yes").checked){
+								message += "Date Received cannot be empty\n";
+							}else if(document.getElementById("external_no").checked){
+								message += "Date Transmitted cannot be empty\n";
+							}
+							if_valid = false;
+						}
+						if(document.getElementsByName("remarks_particulars")[0].value==""){
+							if(document.getElementById("external_yes").checked){
+								message += "Particulars cannot be empty\n";
+							}else if(document.getElementById("external_no").checked){
+								message += "Remarks cannot be empty\n";
+							}
+							if_valid = false;
+						}
+					}
+					if(document.getElementsByName("doc_type")[0].value==""){
+						message += "Specify the document type\n";
 						if_valid = false;
 					}
-					if(document.getElementsByName("particulars")[0].value==""){
-						message += "Particulars cannot be empty\n";
-						if_valid = false;
+					for(var i = 0; i <row_count; i++){
+						if((!document.getElementById("attributeNo" + String(i)).value=="" && document.getElementById("valueNo" + String(i)).value=="") || (document.getElementById("attributeNo" + String(i)).value=="" && !document.getElementById("valueNo" + String(i)).value=="")){
+							message += "Additional information number " + (i+1) + " has an empty field\n";
+							if_valid = false;
+						}
 					}
-				}
-				if(document.getElementsByName("doc_type")[0].value==""){
-					message += "Specify the document type\n";
-					if_valid = false;
-				}
-				for(var i = 0; i <row_count; i++){
-					if((!document.getElementById("attributeNo" + String(i)).value=="" && document.getElementById("valueNo" + String(i)).value=="") || (document.getElementById("attributeNo" + String(i)).value=="" && !document.getElementById("valueNo" + String(i)).value=="")){
-						message += "Additional information number " + (i+1) + " has an empty field\n";
-						if_valid = false;
+					if(!if_valid){
+						window.alert(message);
 					}
+					return if_valid;
 				}
-				if(!if_valid){
-					window.alert(message);
-				}
-				return if_valid;
 			}
 		</script>
 	</fieldset>
