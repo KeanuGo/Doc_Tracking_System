@@ -1,0 +1,189 @@
+<?php
+	session_start();
+    if((!isset($_SESSION['logined']) || $_SESSION['logined'] === FALSE)||$_SESSION['who']=='admin'){
+        header("Location: user_login.html");
+        die();
+    }
+	define('DB_HOST', 'localhost');
+	define('DB_NAME', 'document_tracking_system');
+	define('DB_USER','root');
+	define('DB_PASSWORD','1_Quick_Brown_Fox');
+	
+	$con=new mysqli(DB_HOST,DB_USER,DB_PASSWORD,DB_NAME);
+	if ($con->connect_errno) {
+		echo "Failed to connect to MySQL: (" . $con->connect_errno . ") " . $con->connect_error;
+	}
+?>
+<html>
+<head>
+<link rel = "icon" href = "images/homepage.ico">
+<title>Incoming Documents Log</title>
+<link rel = "stylesheet" type = "text/css" href = "homepage-style.css">
+<style>
+ .table {
+	background-color: black;
+	margin-top: 10px;
+
+	font-family: calibri light;
+	font-weight: bold;
+	font-size: 16px;
+ }
+ .table_text{
+	background-color: rgb(254,254,0);
+	font-family: candara;
+	font-size: 18px;
+	
+	border-radius: 6px;
+	border-width: 2px;
+	outline: none;
+}
+.table_text2{
+	background-color: rgb(254,254,254);
+	font-family: calibri light;
+	font-size: 18px;
+	
+	border-radius: 6px;
+	border-width: 2px;
+	outline: none;
+}
+table{
+	width: 100%;
+}
+
+thead, tbody, tr, td, th { display: block; }
+
+tr:after{
+    content: ' ';
+    display: block;
+    visibility: hidden;
+    clear: both;
+}
+
+thead th{
+    height: 30px;
+    /*text-align: left;*/
+}
+
+tbody{
+    height: 460px;
+    overflow-y: auto;
+}
+
+thead{
+    /* fallback */
+}
+
+
+tbody td{
+    width: 16.2%;
+    float: left;
+}
+thead th{
+	width: 16.0%;
+    float: left;
+}
+ 
+</style>
+</head>
+<body id="background">
+	<div align="center"><legend id = "legend"> &nbsp Incoming Documents Log &nbsp </legend></div>
+	<center>
+	<div class="scrollit">
+	<table id="incoming_doc_table" border="1" class="table">
+	<thead>
+		<th class="table_text" onclick="sortTable(0)">Incoming ID<img src="image/empty_arrow.png" id="column0" style="height:15px;width:15px"></th>
+		<th class="table_text" onclick="sortTable(1)">Date Received<img src="image/empty_arrow.png" id="column1" style="height:15px;width:15px"></th>
+		<th class="table_text" onclick="sortTable(2)">Sender<img src="image/empty_arrow.png" id="column2" style="height:15px;width:15px"></th>
+		<th class="table_text" onclick="sortTable(3)">Document Code<img src="image/empty_arrow.png" id="column3" style="height:15px;width:15px"></th>
+		<th class="table_text" onclick="sortTable(4)">Reference Date<img src="image/empty_arrow.png" id="column4" style="height:15px;width:15px"></th>
+		<th class="table_text" onclick="sortTable(5)">Particulars<img src="image/empty_arrow.png" id="column5" style="height:15px;width:15px"></th>
+	</thead>
+	<tbody>
+	<?php
+		$queryMain = "SELECT * FROM incoming_doc_log";
+		$result = mysqli_query($con,"$queryMain");
+		for($row_no = 0; ($result->num_rows) > $row_no; $row_no++){
+			$result->data_seek($row_no);
+			$row = $result->fetch_assoc();
+			echo '<tr>';
+			echo '<td align="center" class="table_text2">'.$row['Incoming_ID'].'</td>';
+			echo '<td align="center" class="table_text2">'.$row['dateReceived_Transmitted'].'</td>';
+			echo '<td align="center" class="table_text2">'.$row['sender_recipient'].'</td>';
+			echo '<td align="center" class="table_text2">'.$row['doc_type'].'</td>';
+			echo '<td align="center" class="table_text2">'.$row['reference_date'].'</td>';
+			echo '<td align="center" class="table_text2">'.$row['remarks_particulars'].'</td>';
+			echo '</tr>';
+		}
+	?>
+	</tbody>
+	</table>
+	</div>
+	</center>
+	<br>
+	<div align="right"><form><input id="button2" class="button" type="submit" value="Back" formaction="user_menu.html"></form></div>
+	<script>
+	function sortTable(n, tableID){
+	  var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+	  table = document.getElementById("incoming_doc_table");
+	  switching = true;
+	  //Set the sorting direction to ascending:
+	  dir = "asc"; 
+	  /*Make a loop that will continue until
+	  no switching has been done:*/
+	  while (switching) {
+		//start by saying: no switching is done:
+		switching = false;
+		rows = table.getElementsByTagName("TR");
+		/*Loop through all table rows (except the
+		first, which contains table headers):*/
+		for (i = 1; i < (rows.length - 1); i++) {
+		  //start by saying there should be no switching:
+		  shouldSwitch = false;
+		  /*Get the two elements you want to compare,
+		  one from current row and one from the next:*/
+		  x = rows[i].getElementsByTagName("TD")[n];
+		  y = rows[i + 1].getElementsByTagName("TD")[n];
+		  /*check if the two rows should switch place,
+		  based on the direction, asc or desc:*/
+		  if (dir == "asc") {
+			if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+			  //if so, mark as a switch and break the loop:
+			  shouldSwitch= true;
+			  break;
+			}
+		  } else if (dir == "desc") {
+			if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+			  //if so, mark as a switch and break the loop:
+			  shouldSwitch= true;
+			  break;
+			}
+		  }
+		}
+		if (shouldSwitch) {
+		  /*If a switch has been marked, make the switch
+		  and mark that a switch has been done:*/
+		  rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+		  switching = true;
+		  //Each time a switch is done, increase this count by 1:
+		  switchcount ++;      
+		} else {
+		  /*If no switching has been done AND the direction is "asc",
+		  set the direction to "desc" and run the while loop again.*/
+		  if (switchcount == 0 && dir == "asc") {
+			dir = "desc";
+			switching = true;
+		  }
+		}
+	  }
+	  for(var i = 0; i < 6; i++){
+		document.getElementById("column"+String(i)).setAttribute("src", "image/empty_arrow.png");
+	  }
+	  if(dir=="asc"){
+		document.getElementById("column"+String(n)).setAttribute("src", "images/up_arrow.png");
+	  }else if(dir=="desc"){
+		document.getElementById("column"+String(n)).setAttribute("src", "images/down_arrow.png");
+	  }
+	}
+	</script>
+</body>
+</html>
