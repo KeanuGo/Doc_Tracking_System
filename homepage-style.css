@@ -1,21 +1,19 @@
-/*
-#body-color {
-	background-color: rgb(0,0,110);
-	color: yellow;
-}
-*/
+
 #background {
-	background-image: url("images/program.jpg");
-	background-repeat: no-repeat;
+	/*background-image: url("images/program.jpg");
+	background-repeat: no-repeat;*/
+	background-color: rgb(245,245,245);
 }
 
 .button {
-	width: 320px;
-	height: 50px;
+	width: 280px;
+	height: 40px;
 
 	display: inline-block;
 	font-family: candara;
-	font-size: 25px;
+	font-weight: bold;
+	font-size: 20px;
+
 	cursor: pointer;
 	text-align: center;
 	text-decoration: none;
@@ -23,19 +21,17 @@
 
 	color: yellow;
 	border: none;
-	border-radius: 10px;
+	border-radius: 8px;
 	background-color: rgb(0,160,0);
-	box-shadow: 0 9px rgb(30,30,30);
+	box-shadow: 0 8px rgb(50,50,50);
 }
 
 .button:hover {
 	background-color: rgb(0,110,0);
-	font-weight: bold;
 }
 
 .button:active {
-	box-shadow: 0, 5px, rgb(30,30,30);
-	transform: translateY(4px);
+	transform: translateY(3px);
 }
 
 .foo {
@@ -44,24 +40,29 @@
 
 #fs {
 	background-color: white;
-	margin-top: 50px;
+	margin-top: 30px;
 	margin-bottom: 10px;
 	margin-left: 10px;
-	border-radius: 9px;
-	height: 100%	;
-	width: 30%; 
 
-	font-family: calibri light;
+	border-radius: 8px;
+	border-width: thin;
+	height: 60%;
+	width: 25%; 
+
+	font-family: helvetica;
 	font-weight: bold;
-	font-size: 16px;
+	font-size: 15px;
 }
+
+
 /*
 .header-site {
 	background: url("images/leyeco_logo.png");
 	background-repeat: no-repeat;
-}*/
+}
 
 #header {
+	text-shadow: 0 0 8px white, 0 10px 25px blue, 0 0 10px darkblue;
 	background-color: black;
 	font-family: calibri light;
 	font-weight: bold;
@@ -71,41 +72,43 @@
 	height: 100px;
 	color: white;
 }
-
+*/
 #legend {
 	box-shadow: 0 8px rgb(60,60,60);
 	background-color: black;
 	color: yellow;
 
 	font-family: candara;
-	font-size: 30px;
+	font-size: 25px;
 	border-radius: 10px;
 }
 
-#logo-dimension {
-	width: 400px;
-	height: 400px;
-	margin-left: 150px; 
-	margin-top: 80px;
+#logo {
+	margin-top: 20px;
+	height: 100px;
+	width: 100px; 
 }
 
 .mytext {
-	background-color: rgb(245,245,245);
-	font-family: calibri light;
-	font-size: 18px;
+	box-shadow: 0.1px 0.1px 0.1px black;
+	background-color: white;
+	font-family: candara;
+	font-size: 15px;
 	
-	border-radius: 6px;
-	border-width: 2px;
-	outline: none;
-	width: 350px;
+	border-radius: 4px;
+	border-width: 1px;
+	width: 270px;
 	height: 35px;
 }
 
 .mytext:focus {
-	border-color: blue;
+	border-color: cyan;
+	/*-webkit-transition-delay: 0.1s;*/
+	box-shadow: 0.8px 0.8px 0.8px 0.8px cyan;
 }
 
-#text {
-	text-indent: 15px;
+.text {
+	line-height: 2;
+	text-indent: 18px;
 	text-align: left;
 }
