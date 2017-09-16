@@ -1,0 +1,43 @@
+<!DOCTYPE HTML>
+<?php 
+    session_start();
+    if((!isset($_SESSION['logined']) || $_SESSION['logined'] === FALSE) ||$_SESSION['who']=='admin'){
+        header("Location: homepage.html");
+        die();
+    }
+?>
+<html>
+	<head>
+		<title> Sign-Up </title>
+		<link rel="stylesheet" type="text/css" href="homepage-style.css">
+	</head>
+	<body id="background">
+		<div align = "center">
+			<fieldset id = "fs">
+				<legend id = "legend"> &nbsp&nbspDocument Code&nbsp&nbsp </legend><br>
+				<table border="0"><tr>
+					<form method="POST" action="doc_code_connectivity.php">
+						<tr><td>
+							Document Code<br><br>
+						</td> 
+						<td>
+							<input class = "mytext foo" type="text" size = "100" name="document_code"><br><br>
+						</td>
+						</tr>
+						<tr><td>
+							Document Name 
+						</td>
+						<td>
+							<input class = "mytext foo" type="text" size = "100" name="document_name">
+						</td></tr>
+						<table>
+							<br><button class="button" name="add"> ADD </button><br><br>
+							<button class="button" name="back" formaction = "user_menu.html"> BACK TO USER MENU </button><br><br>
+						</table>
+					</form>
+				</tr>
+				</table>
+			</fieldset>
+		</div>
+	</body>
+</html>
