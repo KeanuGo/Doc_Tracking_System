@@ -1,8 +1,9 @@
 
 #background {
-	/*background-image: url("images/program.jpg");
-	background-repeat: no-repeat;*/
-	background-color: rgb(245,245,245);
+	/*background-image: url("images/pic1.jpeg");
+	background-repeat: no-repeat;
+	background: radial-gradient(ellipse at center, rgb(255,255,255), rgb(255,255,255), rgb(220,220,220), rgb(200,200,200));*/
+	background: rgb(245,245,245);
 }
 
 .button {
@@ -19,15 +20,15 @@
 	text-decoration: none;
 	outline: none;
 
-	color: yellow;
+	color: white;
 	border: none;
-	border-radius: 8px;
-	background-color: rgb(0,160,0);
-	box-shadow: 0 8px rgb(50,50,50);
+	border-radius: 6px;
+	background: linear-gradient(to top, rgb(0,100,0), rgb(0,200,0));
 }
 
 .button:hover {
-	background-color: rgb(0,110,0);
+	background: linear-gradient(to top, rgb(0,85,0), rgb(0,185,0));
+	border-color: black;
 }
 
 .button:active {
@@ -39,11 +40,13 @@
 }
 
 #fs {
-	background-color: white;
+	background: linear-gradient(to top, rgb(220,220,220), rgb(255,255,255));
 	margin-top: 30px;
 	margin-bottom: 10px;
 	margin-left: 10px;
-
+	
+	box-shadow: 0 0 10px rgb(170,170,170);
+	border: 3px solid rgb(200,200,200);
 	border-radius: 8px;
 	border-width: thin;
 	height: 60%;
@@ -53,7 +56,6 @@
 	font-weight: bold;
 	font-size: 15px;
 }
-
 
 /*
 .header-site {
@@ -90,11 +92,12 @@
 }
 
 .mytext {
-	box-shadow: 0.1px 0.1px 0.1px black;
 	background-color: white;
 	font-family: candara;
 	font-size: 15px;
 	
+	border: 2px solid rgb(200,200,200);
+    /*box-shadow: 0 0 10px rgb(170,170,170);*/
 	border-radius: 4px;
 	border-width: 1px;
 	width: 270px;
@@ -102,9 +105,9 @@
 }
 
 .mytext:focus {
-	border-color: cyan;
-	/*-webkit-transition-delay: 0.1s;*/
-	box-shadow: 0.8px 0.8px 0.8px 0.8px cyan;
+	outline: none;
+    border-color: rgb(158,202,237);
+    box-shadow: 0 0 10px rgb(158,202,237);
 }
 
 .text {
