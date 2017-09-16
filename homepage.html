@@ -9,19 +9,21 @@
 	</head>
 
 	<body id = "background">
-		<header id = "header" align = "center">
+		<!--<header id = "header" align = "center">
 			LEYECO II Internal Audit Document Tracking System (IA-DTS)
 		</header>
 
-		<img src = "images/leyeco_logo.png" id = "logo-dimension" align = "left">
+		<img src = "images/leyeco_logo.png" id = "logo-dimension" align = "left">-->
 
 		<div align = "center">
+			<img src = "images/leyeco_logo.png" id = "logo"><br>
+			<h2 style = "font-family: helvetica"> Internal Audit Document Tracking System </h2>
 			<fieldset id = "fs">
 				<form type = "submit" method = "POST" action = "user_connectivity.php">	
-					<br> <div align = "center"> Username </div>
-					<br> <input type = "text" name = "user" class = "mytext foo" size = "80"><br>
-					<br> <div align = "center"> Password </div>
-					<br> <input type = "password" name = "pass" class = "mytext foo" size = "80"><br><br>
+					<br> <div class="text"> Username </div>
+					<input type = "text" name = "user" class = "mytext foo" size = "80"><br>
+					<br> <div class="text"> Password </div>
+					<input type = "password" name = "pass" class = "mytext foo" size = "80"><br><br>
 					Log in as:
 					<br><br><button class = "button" formaction = "admin_connectivity.php" name = "admin"> ADMIN </button><br><br>
 					<button class = "button" name = "employee"> EMPLOYEE </button><br><br>
