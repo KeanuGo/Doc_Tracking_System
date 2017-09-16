@@ -87,6 +87,25 @@ thead th{
 </head>
 <body id="background">
 	<div align="center"><legend id = "legend"> &nbsp Incoming Documents Log &nbsp </legend></div>
+	<div>
+	<form id="filterer" align="center" action="incoming_documents.html" onsubmit="return filterSearch()" type="submit" method="POST">
+		<text id="header" style="font-size:20px">Date</text>
+		<text id="header" style="font-size:20px">from</text> <input type="date" name="search_date_from" class="mytext foo" size="80" style="width:175px">
+		<text id="header" style="font-size:20px">to</text> <input type="date" name="search_date_to" class="mytext foo" size="80" style="width:175px">
+		<text id="header" style="font-size:20px">Document Type </text><input list="doc_type" name="doc_type" class="mytext foo" size="80"> <datalist id="doc_type">
+		<?php
+			#gets all the known document types in database
+			$query = $con->query("SELECT doc_code, doc_name from doc_code_list ORDER BY doc_code_id");
+			for($row_no = 0; ($query->num_rows) > $row_no; $row_no++){
+				$query->data_seek($row_no);
+				$row = $query->fetch_assoc();
+				echo'<option value="'.$row['doc_code'].'">'.$row['doc_name'].'</option>';
+		}?>
+		</datalist>
+		<input type="text" style="display:none" id="queryy" name="queryy">
+		<input type="submit" value="Search" name="searcher" class="button" style="width:100px;font-size:20px">
+	</form>
+	</div>
 	<center>
 	<div class="scrollit">
 	<table id="incoming_doc_table" border="1" class="table">
@@ -99,8 +118,14 @@ thead th{
 		<th class="table_text" onclick="sortTable(5)">Particulars<img src="image/empty_arrow.png" id="column5" style="height:15px;width:15px"></th>
 	</thead>
 	<tbody>
-	<?php
+	<script type='text/javascript'>
+		var someVarName = localStorage.getItem("someVarName");
+	</script>
+	<?php	
 		$queryMain = "SELECT * FROM incoming_doc_log";
+		if(isset($_POST['searcher'])){
+			$queryMain = $_POST['queryy'];
+		}
 		$result = mysqli_query($con,"$queryMain");
 		for($row_no = 0; ($result->num_rows) > $row_no; $row_no++){
 			$result->data_seek($row_no);
@@ -119,6 +144,40 @@ thead th{
 	</table>
 	</div>
 	</center>
+	<script type='text/javascript'>
+	function filterSearch(){
+		var query = "select * from incoming_doc_log ";
+		if(!(document.getElementsByName("search_date_from")[0].value=="") || !(document.getElementsByName("search_date_to")[0].value=="") || !(document.getElementsByName("doc_type")[0].value=="")){
+			var x = false;
+			if(!(document.getElementsByName("search_date_from")[0].value=="")){
+				query += " where dateReceived_Transmitted >='" + document.getElementsByName("search_date_from")[0].value + "'";
+				x = true;
+			}
+			if(!(document.getElementsByName("search_date_to")[0].value=="")){
+				if(!x){
+					query += " where ";
+				}else{
+					query += " and "
+				}
+				query += "dateReceived_Transmitted<='" + document.getElementsByName("search_date_to")[0].value + "'";
+			}
+			if(!(document.getElementsByName("doc_type")[0].value=="")){
+				if(!x){
+					query += " where ";
+				}else{
+					query += " and "
+				}
+				query += "doc_type='" + document.getElementsByName("doc_type")[0].value + "'";
+			}
+			localStorage.setItem("someVarName", query);
+			document.getElementById("queryy").value=query;
+			return true;
+		}
+		query +=";";
+		document.getElementById("queryy").value=query;
+		return true;
+	}
+	</script>
 	<br>
 	<div align="right"><form><input id="button2" class="button" type="submit" value="Back" formaction="user_menu.html"></form></div>
 	<script>
