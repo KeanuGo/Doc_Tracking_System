@@ -19,14 +19,13 @@ function NewDocCode()
 	$data = mysqli_query($con,$query);
 	if($data)
 	{
-	header("Location:doc_code.php");
+		header("Location:doc_code.php");
 	}
 }
 
 function Add()
 {
-	if(!empty($_POST['document_code']) AND !empty($_POST['document_name']))   //checking the 'user' name which is from Sign-Up.html, is it empty or have some text
-	{
+	if(!empty($_POST['document_code']) AND !empty($_POST['document_name'])) {
 		global $con;
 		$query = $con->query("SELECT doc_code FROM doc_code_list WHERE doc_code = '$_POST[document_code]'");
 		if($query){
@@ -45,7 +44,7 @@ function Add()
 		}
 	}
 }
-if(isset($_POST['submit']))
+if(isset($_POST['add']))
 {
 	Add();
 }
