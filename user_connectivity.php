@@ -19,7 +19,8 @@ function SignIn()
 	if(!empty($_POST['user']))   //checking the 'user' name which is from Sign-In.html, is it empty or have some text
 	{
 		global $con;
-		$query = $con->query("SELECT *  FROM users where username = '$_POST[user]' AND password = '$_POST[pass]'");
+		$hash = sha1($_POST['pass']);
+		$query = $con->query("SELECT *  FROM users where username = '$_POST[user]' AND password = '$hash'");
 		$row = $query->fetch_assoc();
 		if(!empty($row['username']) AND !empty($row['password']))
 		{
