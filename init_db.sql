@@ -46,5 +46,5 @@ create table users(
 	fullname VARCHAR(50) NOT NULL,
 	username VARCHAR(40) NOT NULL,
 	email VARCHAR(40) NOT NULL,
-	password VARCHAR(40) NOT NULL, 
+	password VARCHAR(100) NOT NULL, 
 	PRIMARY KEY(userID));
