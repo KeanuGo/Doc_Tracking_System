@@ -13,16 +13,15 @@ if ($con->connect_errno) {
 function NewUser()
 {
 	global $con;
-	$fullname = $_POST['name'];
-	$userName = $_POST['user'];
-	$email = $_POST['email'];
-	$password =  $_POST['pass'];
+	$fullname = mysqli_real_escape_string($con, $_POST['name']);
+	$userName = mysqli_real_escape_string($con,$_POST['user']);
+	$email = mysqli_real_escape_string($con,$_POST['email']);
+	$password =  mysqli_real_escape_string($con,$_POST['pass']);
 	$query = "INSERT INTO users (fullname,username,email,password) VALUES ('$fullname','$userName','$email','$password')";
 	$data = mysqli_query($con,$query);
 	if($data)
 	{
 	echo "YOUR REGISTRATION IS COMPLETED...";
-	header("Refresh: 2; URL=admin_menu.html");
 	}
 }
 
@@ -35,20 +34,25 @@ function SignUp()
 		if($query){
 			if(!$row = $query->fetch_assoc())
 			{
-				if($_POST['pass'] == $_POST['cpass'])
+				if(strlen($_POST['pass'])>=7)
 				{
-					newuser();
+					if($_POST['pass'] == $_POST['cpass'])
+					{
+						newuser();
+					}
+					else
+					{
+						echo "PASSWORD DOES NOT MATCH";
+					}
 				}
 				else
 				{
-					echo "PASSWORD DOES NOT MATCH";
-					header("Refresh: 2; URL=user_enrollment.html");
+					echo "PASSWORD MUST CONTAIN AT LEAST 7 CHARACTERS...";
 				}
 			}
 			else
 			{
 				echo "SORRY...YOU ARE ALREADY REGISTERED USER...";
-				header("Refresh: 2; URL=admin_menu.html");
 			}
 		}
 		else
