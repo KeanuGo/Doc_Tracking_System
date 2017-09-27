@@ -7,7 +7,7 @@
 	define('DB_HOST', 'localhost');
 	define('DB_NAME', 'document_tracking_system');
 	define('DB_USER','root');
-	define('DB_PASSWORD','');
+	define('DB_PASSWORD','1_Quick_Brown_Fox');
 	
 	$con=new mysqli(DB_HOST,DB_USER,DB_PASSWORD,DB_NAME);
 	if ($con->connect_errno) {
@@ -51,10 +51,13 @@
 	<div align="center">
 	<fieldset id="fs"><legend id="legend"> &nbsp Document Form &nbsp </legend>
 		<p id = "status"></p>
-		<form type="submit" action="add_document.php" method="POST" onsubmit="return checkInputs(this.submited)" id="myForm">
+		<form type="submit" action="add_document.php" method="POST" onsubmit="return checkInputs(this.submited)" id="myForm" enctype="multipart/form-data">
 		<table border="0"  cellspacing="0">
 		<tr>
 		<td>Reference date</td><td> <input type="date" name="ref_date" class="mytext foo" size="80"></td>
+		</tr>
+		<tr>
+		<td>Reference number</td><td> <input type="text" name="ref_no" class="mytext foo" size="80"></td>
 		</tr>
 		<tr>
 		<td>Incoming/Outgoing?</td><td>Incoming<input type="radio" name="in_or_od" value="Incoming" onclick="handleClick(this)" id="external_yes">Outgoing<input type="radio" name="in_or_od" value="Outgoing" onclick="handleClick(this)" id="external_no">N/A<input type="radio" name="in_or_od" value="not_in_or_od" onclick="handleClick(this)" id="external_none"></td>
@@ -99,14 +102,17 @@
 		<?php
 			#gets all the known document types in database
 			$query = $con->query("SELECT doc_code, doc_name from doc_code_list ORDER BY doc_code_id");
-			for($row_no = 1; ($query->num_rows) > $row_no; $row_no++){
+			for($row_no = 0; ($query->num_rows) > $row_no; $row_no++){
 				$query->data_seek($row_no);
 				$row = $query->fetch_assoc();
-				echo'<option value="'.$row['doc_name'].'">'.$row['doc_code'].'</option>';
+				echo'<option value="'.$row['doc_code'].'">'.$row['doc_name'].'</option>';
 		}?>
 		</datalist></td>
 		</tr>
 		</table>
+		<tr>
+		<td>Attachment file</td><td><input type="file" name="attach_file" id="attach_file"></td>
+		</tr>
 		<table id="additional_doc_info_table">
 		<thead>
 		<th>Information Type</th><th>Information Value</th>
