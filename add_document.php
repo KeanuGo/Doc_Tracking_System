@@ -22,12 +22,24 @@ $Password = $_POST['pass'];
 function addDocument(){
 	global $con;
 	$ref_date = $_POST['ref_date'];
+	$ref_no = $_POST['ref_no'];
 	$doc_type = $_POST['doc_type'];
-	$doc_type_id = mysqli_query($con, "select doc_code_id from doc_code_list where doc_name='$doc_type'");
+	$query_doc_type = "select doc_code_id from doc_code_list where doc_code='$doc_type'";
+	$doc_type_id = mysqli_query($con, $query_doc_type);
 	$doc_type_id->data_seek(0);
 	$doc_type_id = $doc_type_id->fetch_assoc();
 	$doc_type_id = $doc_type_id['doc_code_id'];
 	$row_count = (int)$_POST['doc_info_row_count'];
+	$img_data = "NULL";
+	$img_name = "NULL";
+	if(count($_FILES) > 0){
+		if(is_uploaded_file($_FILES['attach_file']['tmp_name'])){
+			$img_data = addslashes(file_get_contents($_FILES['attach_file']['tmp_name']));
+			$img_name = $_FILES['attach_file']['name'];
+			$img_data = "'".$img_data."'";
+			$img_name = "'".$img_name."'";
+		}
+	}
 	
 	/*$s1 = "Hello";
 	$s1 = $s1 . " World";
@@ -49,7 +61,7 @@ function addDocument(){
 	$json_doc_info = "'" . $json_doc_info . "'";
 	#echo $json_doc_info;
 	
-	$query = "INSERT INTO doc VALUES (0,'$ref_date')";
+	$query = "INSERT INTO doc(ID, reference_date, reference_no, attach_name, attach_image) VALUES (0,'$ref_date', '$ref_no', $img_name, $img_data)";
 	$data = mysqli_query($con,$query);
 	$last_id = $con->insert_id;
 	
@@ -57,20 +69,30 @@ function addDocument(){
 	$data2 = mysqli_query($con, $query2);
 	#echo "last id is :" . $last_id;
 	$external = false;
-	if(!empty($_POST['external'])){
+	if(!empty($_POST['in_or_od'])){
 		$external = true;
-		if($_POST['external'] == 'Yes'){
-			$sender = $_POST['sender'];
-			$date_received = $_POST['date_received'];
-			$particulars = $_POST['particulars'];
-			$updated_by = $_SESSION['username'];
-			$query3= "insert into doc_log values ($last_id, 'IN', '$particulars', '$date_received', '$sender', '$updated_by', CURDATE(), CURTIME())";
-			$data3 = mysqli_query($con, $query3);
-			if(!$data3){
-				$external = false;
-			}
-			#echo "EXTERNAL";
+		$sender_recipient = $_POST['sender_recipient'];
+		$date_received_transmitted = $_POST['date_received_transmitted'];
+		$remarks_particulars = $_POST['remarks_particulars'];
+		$updated_by = $_SESSION['username'];
+		if($_POST['in_or_od'] == 'Incoming'){
+			echo 'Incoming Doc';
+			$data3_1 = mysqli_query($con, "update doc set if_incoming='Y' where ID=$last_id");
+			$data3_2 = mysqli_query($con, "update doc set if_od='N' where ID=$last_id");
+			$query3= "insert into doc_log values ($last_id, 'IN', '$remarks_particulars', '$date_received_transmitted', '$sender_recipient', '$updated_by', CURDATE(), CURTIME())";
+		}else if($_POST['in_or_od'] == 'Outgoing'){
+			echo 'Outgoing Doc';
+			$data3_1 = mysqli_query($con, "update doc set if_incoming='N' where ID=$last_id");
+			$data3_3 = mysqli_query($con, "update doc set if_od='Y' where ID=$last_id");
+			$query3= "insert into doc_log values ($last_id, 'OUT', '$remarks_particulars', '$date_received_transmitted', '$sender_recipient', '$updated_by', CURDATE(), CURTIME())";
+		}else if($_POST['in_or_od'] == 'not_in_or_od'){
+			
 		}
+		$data3 = mysqli_query($con, $query3);
+		if(!$data3 || !$data3_1 || !$data3_2){
+			$external = false;
+		}
+		#echo "EXTERNAL";
 	}
 	
 	if($data && $data2 && $external){
@@ -88,7 +110,7 @@ function addDocument(){
 		}
 	}
 	
-	header("Refresh: 1; URL=user_menu.html");
+	//header("Refresh: 5; URL=user_menu.html");
 }
 
 if(isset($_POST['submit'])){
