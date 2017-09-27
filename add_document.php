@@ -2,7 +2,7 @@
 define('DB_HOST', 'localhost');
 define('DB_NAME', 'document_tracking_system');
 define('DB_USER','root');
-define('DB_PASSWORD','');
+define('DB_PASSWORD','1_Quick_Brown_Fox');
 
 $con=new mysqli(DB_HOST,DB_USER,DB_PASSWORD,DB_NAME);
 if ($con->connect_errno) {
@@ -22,12 +22,24 @@ $Password = $_POST['pass'];
 function addDocument(){
 	global $con;
 	$ref_date = $_POST['ref_date'];
+	$ref_no = $_POST['ref_no'];
 	$doc_type = $_POST['doc_type'];
-	$doc_type_id = mysqli_query($con, "select doc_code_id from doc_code_list where doc_name='$doc_type'");
+	$query_doc_type = "select doc_code_id from doc_code_list where doc_code='$doc_type'";
+	$doc_type_id = mysqli_query($con, $query_doc_type);
 	$doc_type_id->data_seek(0);
 	$doc_type_id = $doc_type_id->fetch_assoc();
 	$doc_type_id = $doc_type_id['doc_code_id'];
 	$row_count = (int)$_POST['doc_info_row_count'];
+	$img_data = "NULL";
+	$img_name = "NULL";
+	if(count($_FILES) > 0){
+		if(is_uploaded_file($_FILES['attach_file']['tmp_name'])){
+			$img_data = addslashes(file_get_contents($_FILES['attach_file']['tmp_name']));
+			$img_name = $_FILES['attach_file']['name'];
+			$img_data = "'".$img_data."'";
+			$img_name = "'".$img_name."'";
+		}
+	}
 	
 	/*$s1 = "Hello";
 	$s1 = $s1 . " World";
@@ -49,7 +61,7 @@ function addDocument(){
 	$json_doc_info = "'" . $json_doc_info . "'";
 	#echo $json_doc_info;
 	
-	$query = "INSERT INTO doc(ID, reference_date) VALUES (0,'$ref_date')";
+	$query = "INSERT INTO doc(ID, reference_date, reference_no, attach_name, attach_image) VALUES (0,'$ref_date', '$ref_no', $img_name, $img_data)";
 	$data = mysqli_query($con,$query);
 	$last_id = $con->insert_id;
 	
@@ -98,7 +110,7 @@ function addDocument(){
 		}
 	}
 	
-	header("Refresh: 5; URL=user_menu.html");
+	//header("Refresh: 5; URL=user_menu.html");
 }
 
 if(isset($_POST['submit'])){
