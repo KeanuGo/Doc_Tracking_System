@@ -8,7 +8,7 @@ create table doc(
     if_incoming enum('Y', 'N') not null,
     if_od enum('Y', 'N') not null,
     attach_name varchar(50),
-    attach_image mediumblob;
+    attach_image mediumblob);
 create table doc_code_list(
 	doc_code_id int(3) primary key not null auto_increment,
 	doc_code varchar(10) not null,
