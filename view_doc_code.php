@@ -74,7 +74,7 @@
 			cell.setAttribute("colspan", "2");
 			cell.setAttribute("align", "center");
 			document.getElementById('mytext2').setAttribute('placeholder', 'CDCR');
-			document.getElementById('mytext3').setAttribute('placeholder', 'Cashiers Daily Collection Report');
+			document.getElementById('mytext3').setAttribute('placeholder', 'Cashier\'s Daily Collection Report');
 			document.getElementById('doc_id_field').setAttribute('value', 1);
 			function add_doc_info_function(){
 				var new_row = background.insertRow(row_count);
@@ -136,6 +136,18 @@
 		document.getElementById('mytext2').setAttribute('placeholder', '$row[0]');
 		document.getElementById('mytext3').setAttribute('placeholder', '$row[1]');
 		document.getElementById('doc_id_field').setAttribute('value', '$id');
+	</script>";
+	}
+	$query_doc_type = "select doc_attrib from doc_code_list where doc_code_id='$id'";
+	$doc_type_id = mysqli_query($con, $query_doc_type);
+	$doc_type_id = $doc_type_id->fetch_assoc();
+	$doc_type_id = json_decode($doc_type_id['doc_attrib'], true);
+	$size=sizeof($doc_type_id);
+	for($i = 0;  $i < $size; $i++){
+	echo
+	"<script type='text/javascript'>
+		add_doc_info_function();
+		document.getElementById('attributeNo'+$i).setAttribute('value', '$doc_type_id[$i]');
 	</script>";
 	}
 ?>
