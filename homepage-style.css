@@ -1,75 +1,113 @@
-/*
-#body-color {
-	background-color: rgb(0,0,110);
-	color: yellow;
+
+article {
+    margin-left: 200px;
+    padding: 2em;
+    font-family: calibri;
+    overflow-y: auto;
+    max-height:610px;
 }
-*/
+section {
+	font-family: helvetica;
+	font-size: 50px;
+	text-indent: 18px;
+}
+
 #background {
-	background-image: url("images/program.jpg");
+	/*background-image: url("images/pic1.jpeg");
 	background-repeat: no-repeat;
+	background: radial-gradient(ellipse at center, rgb(255,255,255), rgb(255,255,255), rgb(220,220,220), rgb(200,200,200));*/
+	background: rgb(245,245,245);
+
 }
 
 .button {
-	width: 320px;
-	height: 50px;
+	width: 280px;
+	height: 40px;
 
 	display: inline-block;
 	font-family: candara;
-	font-size: 25px;
+	font-weight: bold;
+	font-size: 20px;
+
 	cursor: pointer;
 	text-align: center;
 	text-decoration: none;
 	outline: none;
 
-	color: yellow;
+	color: white;
 	border: none;
-	border-radius: 10px;
-	background-color: rgb(0,160,0);
-	box-shadow: 0 9px rgb(30,30,30);
+	border-radius: 6px;
+	background: linear-gradient(to top, rgb(0,100,0), rgb(0,200,0));
 }
 
 .button:hover {
-	background-color: rgb(0,110,0);
-	font-weight: bold;
+	background: linear-gradient(to top, rgb(0,85,0), rgb(0,185,0));
+    border-color: rgb(158,202,237);
+    box-shadow: 0 0 30px rgb(158,202,237);
 }
 
 .button:active {
-	box-shadow: 0, 5px, rgb(30,30,30);
-	transform: translateY(4px);
+	transform: translateY(3px);
 }
 
+#button2 {
+	width: 90px;
+	height: 30px;
+	font-size: 15px;
+}
+
+#button3 {
+	width: 170px;
+	height: 30px;/*
+	background: linear-gradient(to top, rgb(220,220,220), rgb(255,255,255));
+	color:black;*/
+	border: none;
+	font-size: 15px;
+	font-family: calibri;
+}
+/*
+.circle-button {
+	width: 20px;
+	height: 20px;
+	border-radius: 20px;
+	font-size: 10px;
+	border: none;
+	outline: none;
+	cursor: pointer;
+}
+*/
 .foo {
 	padding-left: 10px;
 }
 
 #fs {
-	background-color: white;
-	margin-top: 50px;
+	background: linear-gradient(to top, rgb(220,220,220), rgb(255,255,255));
+	margin-top: 30px;
 	margin-bottom: 10px;
 	margin-left: 10px;
-	border-radius: 9px;
-	height: 100%	;
-	width: 30%; 
+	
+	box-shadow: 0 0 10px rgb(170,170,170);
+	border: 3px solid rgb(200,200,200);
+	border-radius: 8px;
+	border-width: thin;
+	width: 25%; 
 
-	font-family: calibri light;
-	font-weight: bold;
-	font-size: 16px;
+	font-family: calibri;
+	font-size: 15px;
 }
-/*
-.header-site {
-	background: url("images/leyeco_logo.png");
-	background-repeat: no-repeat;
-}*/
 
-#header {
+h2 {
+	font-family: arial narrow;
+	font-size: 30px;
+	text-align: center;
+
+	box-shadow: 0 8px rgb(60,60,60);
 	background-color: black;
-	font-family: calibri light;
-	font-weight: bold;
-	font-size: 40px;
+	color: yellow;
 
-	line-height: 100px;
-	height: 100px;
-	color: white;
+	font-family: candara;
+	font-size: 25px;
+	border-radius: 10px;
 }
 
 #legend {
@@ -78,34 +116,90 @@
 	color: yellow;
 
 	font-family: candara;
-	font-size: 30px;
+	font-size: 25px;
 	border-radius: 10px;
 }
 
-#logo-dimension {
-	width: 400px;
-	height: 400px;
-	margin-left: 150px; 
-	margin-top: 80px;
+#logo {
+	margin-top: 20px;
+	height: 100px;
+	width: 100px; 
+}
+
+#mytext2 {
+	height: 30px;
 }
 
 .mytext {
-	background-color: rgb(245,245,245);
-	font-family: calibri light;
-	font-size: 18px;
+	background-color: white;
+	font-family: candara;
+	font-size: 15px;
 	
-	border-radius: 6px;
-	border-width: 2px;
-	outline: none;
-	width: 350px;
+	border: 2px solid rgb(200,200,200);
+    /*box-shadow: 0 0 10px rgb(170,170,170);*/
+	border-radius: 4px;
+	border-width: 1px;
+	width: 270px;
 	height: 35px;
 }
 
 .mytext:focus {
-	border-color: blue;
+	outline: none;
+    border-color: rgb(158,202,237);
+    box-shadow: 0 0 10px rgb(158,202,237);
 }
 
-#text {
-	text-indent: 15px;
+.text {
+	line-height: 2;
+	text-indent: 18px;
 	text-align: left;
 }
+
+nav {
+	background: linear-gradient(to top, rgb(245,245,245), rgb(200,200,200));
+    float: left;
+    max-width: 170px;
+    margin: 0;
+    padding: 1em;
+}
+
+#table {
+	width: 100%;
+	height: 100px;
+	text-indent: 15px;
+	border-collapse: collapse;
+	border: none;
+	font-family: calibri;
+	font-size: 15px;
+}
+
+#tr-td {
+	border-bottom: 3px solid rgb(221,221,221);
+	text-align: center;
+}
+
+th {
+	background-color: rgb(235,235,235);
+	text-align: center;
+}
+
+
+tr:hover {
+	background-color: rgb(230,230,230);
+}
+
+/*
+table {
+    background-color: #aaa;
+}
+tbody {
+    background-color: #ddd;
+    height: 100px;
+    overflow: auto;
+}
+td {
+    padding: 3px 10px;
+}
+thead, tbody {
+    display: block;
+}*/

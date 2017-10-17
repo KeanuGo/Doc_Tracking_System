@@ -78,6 +78,9 @@
 			//var doc_code_id;
 			row_count = 0;
 			function doSomething(row){
+				while(background.rows.length > 0) {
+					background.deleteRow(0);
+				}
 				var doc_code_id = row.getAttribute("id");
 				location.href="view_doc_code.php?id="+ doc_code_id;
 				var addInfoRow = background.insertRow(0);
@@ -87,6 +90,26 @@
 				cell.innerHTML = cell.innerHTML+"<text>  </text><input type='submit' id='submit' name='submit' value='Save' class='button +Button' style='width:150px'>";
 				cell.setAttribute("colspan", "2");
 				cell.setAttribute("align", "center");
+				/*var new_row = background.insertRow(row_count+1);
+				var cell1 = new_row.insertCell(0);
+				var cell2 = new_row.insertCell(1);
+				var cell3 = new_row.insertCell(2);
+				cell1.innerHTML = "<input type='text' name='attributeNo" + String(row_count) + "' id='attributeNo" + String(row_count) + "' placeholder='Attribute"+ String(row_count) + "' class='mytext foo' size='80'>";
+				cell2.innerHTML = "<input type='button' name='add_doc_info" + String(row_count) + "' id='button2" + String(row_count) + "' value='+' onclick='add_doc_info_function()' class ='button +Button'>";
+				cell3.innerHTML = "<input type='button' name='remove" + String(row_count) + "' id='remove" + String(row_count) + "' value='X' onclick='remove_doc_info(this)' class ='button xButton'>";
+				row_count++;
+				var row_count_field = document.getElementById("row_count_field");
+				row_count_field.setAttribute("value", row_count);
+				document.write('<?php func(); ?>');
+				doc_code_id = row.getAttribute("id");
+				<?php
+					function func(){
+						#$id = $id;
+						#$doc_code_info= $con->query("SELECT * FROM doc_code_list where doc_code_id = ".$id);
+						#echo "<script>document.writeln(doc_code_id);</script>";
+						#header("pota_daw.html");
+					}
+				?>*/
 			}
 		</script>
 	</body>
