@@ -1,0 +1,73 @@
+<?php
+	session_start();
+    if((!isset($_SESSION['logined']) || $_SESSION['logined'] === FALSE)||$_SESSION['who']=='admin'){
+        header("Location: user_login.html");
+        die();
+    }
+	define('DB_HOST', 'localhost');
+	define('DB_NAME', 'document_tracking_system');
+	define('DB_USER','root');
+	define('DB_PASSWORD','');
+	
+	$con=new mysqli(DB_HOST,DB_USER,DB_PASSWORD,DB_NAME);
+	if ($con->connect_errno) {
+		echo "Failed to connect to MySQL: (" . $con->connect_errno . ") " . $con->connect_error;
+	}
+?>
+<html>
+<head>
+<link rel = "icon" href = "images/homepage.ico">
+<title>Incoming Documents Log</title>
+<link rel = "stylesheet" type = "text/css" href = "homepage-style.css">
+
+</head>
+<body id="background">
+	<nav>
+		<div align = "center">
+			<h2>USER MENU</h2>
+			<img src = "images/leyeco_logo.png" id = "logo"><br><br>
+			<form method = "POST" action = "incoming_documents.html">
+				<button class = "button" id = "button3" formaction = "add_document.html" style = "margin-top: 10px"> Add Document </button>
+				<button class = "button" id = "button3" style = "margin-top: 10px"> Incoming Documents </button>
+				<button class = "button" id = "button3" formaction = "outgoing_documents.html" style = "margin-top: 10px"> Outgoing Documents </button>
+				<button class = "button" id = "button3" formaction = "doc_code.php" style = "margin-top: 10px"> Document Code List </button>
+				<button class = "button" id = "button3" formaction = "logout.php" name="log-out" style = "margin-top: 30px"> Log-Out </button>
+			</form>
+		</div>
+	</nav>
+	<article id = "article">
+		<div align="center">
+		<table style="background-color:white" border="1">
+			<?php
+				$querydoc = "SELECT * FROM doc where ID=".$_GET['ID'];
+				$query_doc = mysqli_query($con, $querydoc);
+				$query_doc->data_seek(0);
+				$query_doc = $query_doc->fetch_assoc();
+				#header("Content-type: image/jpeg");
+				echo '<tr><td>Document ID</td><td>'.$query_doc['ID'].'</td></tr>';
+				echo '<tr><td>Reference Date</td><td>'.$query_doc['reference_date'].'</td></tr>';
+				echo '<tr><td>Reference Number</td><td>'.$query_doc['reference_no'].'</td></tr>';
+				$querydoc_info = "SELECT * FROM doc_info where ID=".$_GET['ID'];
+				$query_doc_info = mysqli_query($con, $querydoc_info);
+				$query_doc_info->data_seek(0);
+				$query_doc_info = $query_doc_info->fetch_assoc();
+				$query_doc_type = "select * from doc_code_list where doc_code_id=".$query_doc_info['doc_code_id'];
+				$doc_type = mysqli_query($con, $query_doc_type);
+				$doc_type->data_seek(0);
+				$doc_type = $doc_type->fetch_assoc();
+				echo '<tr><td>Document Type</td><td>'.$doc_type['doc_name'].'</td></tr>';
+				$additional_doc_info = json_decode($query_doc_info['doc_info'], true);
+				#echo '<tr><td>'.$additional_doc_info.'</td></tr>';
+				echo '<tbody>';
+				echo '<tr><td colspan="2" align="center">Additional Document Information</td></tr>';
+				foreach ($additional_doc_info as $key => $value) {
+					echo '<tr><td>'.$key.'</td><td>'.$additional_doc_info[$key].'</td></tr>';
+				}
+				echo '</tbody>';
+			?>
+		</table>
+		<?php echo '<img src="data:image/jpeg;base64,'. base64_encode($query_doc['attach_image']) .'"/>';?>
+	</div>
+	</article>
+</body>
+</html>
