@@ -29,7 +29,8 @@ function addDocument(){
 	$doc_type_id->data_seek(0);
 	$doc_type_id = $doc_type_id->fetch_assoc();
 	$doc_type_id = $doc_type_id['doc_code_id'];
-	$row_count = (int)$_POST['doc_info_row_count'];
+	$row_count = (int)$_POST['row_count_field'];
+	$doc_info_length = (int)$_POST['doc_info_length_field'];
 	$img_data = "NULL";
 	$img_name = "NULL";
 	if(count($_FILES) > 0){
@@ -48,13 +49,24 @@ function addDocument(){
 	$attributeNo = "attributeNo$No";
 	echo $_POST[$attributeNo];
 	echo $_POST['valueNo0'];*/
-	$doc_info = new \stdClass();
+	$doc_info = array();
 	#echo $row_count;
+	for($i = 0; $i < $doc_info_length; $i++){
+		$attribute_name = 'attribute_No' . $i;
+		$value_name = 'value_No' . $i;
+		echo 'Attribute = '. $_POST[$attribute_name] . '<br>Value = '. $_POST[$value_name]; 
+			#array_push($doc_info, $_POST[$attribute_name]=>$_POST[$value_name]);
+			$doc_info[$_POST[$attribute_name]] = $_POST[$value_name];
+		if(!empty($_POST[$attribute_name])&& !empty($_POST[$value_name])){
+		}
+	}
 	for($i = 0; $i < $row_count; $i++){
 		$attribute_name = 'attributeNo' . $i;
 		$value_name = 'valueNo' . $i;
 		if(!empty($_POST[$attribute_name])&& !empty($_POST[$value_name])){
-			$doc_info->$_POST[$attribute_name] = $_POST[$value_name];
+			#echo 'Attribute = '. $_POST[$attribute_name] . '<br>Value = '. $_POST[$value_name]; 
+			#array_push($doc_info, $_POST[$attribute_name]=>$_POST[$value_name]);
+			$doc_info[$_POST[$attribute_name]] = $_POST[$value_name];
 		}
 	}
 	$json_doc_info = json_encode($doc_info);
@@ -79,12 +91,12 @@ function addDocument(){
 			echo 'Incoming Doc';
 			$data3_1 = mysqli_query($con, "update doc set if_incoming='Y' where ID=$last_id");
 			$data3_2 = mysqli_query($con, "update doc set if_od='N' where ID=$last_id");
-			$query3= "insert into doc_log values ($last_id, 'IN', '$remarks_particulars', '$date_received_transmitted', '$sender_recipient', '$updated_by', CURDATE(), CURTIME())";
+			$query3= "insert into doc_log values ($last_id, 'IN', '$remarks_particulars', '$date_received_transmitted', '$sender_recipient', '$updated_by', (select CURDATE()), (select CURTIME()))";
 		}else if($_POST['in_or_od'] == 'Outgoing'){
 			echo 'Outgoing Doc';
 			$data3_1 = mysqli_query($con, "update doc set if_incoming='N' where ID=$last_id");
 			$data3_3 = mysqli_query($con, "update doc set if_od='Y' where ID=$last_id");
-			$query3= "insert into doc_log values ($last_id, 'OUT', '$remarks_particulars', '$date_received_transmitted', '$sender_recipient', '$updated_by', CURDATE(), CURTIME())";
+			$query3= "insert into doc_log values ($last_id, 'OUT', '$remarks_particulars', '$date_received_transmitted', '$sender_recipient', '$updated_by', (select CURDATE()), (select CURTIME()))";
 		}else if($_POST['in_or_od'] == 'not_in_or_od'){
 			
 		}
