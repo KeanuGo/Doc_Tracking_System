@@ -30,17 +30,14 @@
 			  border-top: thin solid;
 			  border-color: black;
 			}
-
 			.bottom {
 			  border-bottom: thin solid;
 			  border-color: black;
 			}
-
 			.left {
 			  border-left: thin solid;
 			  border-color: black;
 			}
-
 			.right {
 			  border-right: thin solid;
 			  border-color: black;
@@ -60,7 +57,7 @@
 		<td>Reference number</td><td> <input type="text" name="ref_no" class="mytext foo" size="80"></td>
 		</tr>
 		<tr>
-		<td>Incoming/Outgoing?</td><td>Incoming<input type="radio" name="in_or_od" value="Incoming" onclick="handleClick(this)" id="external_yes">Outgoing<input type="radio" name="in_or_od" value="Outgoing" onclick="handleClick(this)" id="external_no">N/A<input type="radio" name="in_or_od" value="not_in_or_od" onclick="handleClick(this)" id="external_none"></td>
+		<td>Incoming/Outgoing?</td><td><input type="radio" name="in_or_od" value="Incoming" onclick="handleClick(this)" id="external_yes">Incoming<input type="radio" name="in_or_od" value="Outgoing" onclick="handleClick(this)" id="external_no">Outgoing<input type="radio" name="in_or_od" value="not_in_or_od" onclick="handleClick(this)" id="external_none">N/A</td>
 		</tr>
 		<tbody id="external_doc_form">
 		<tr>
@@ -98,10 +95,10 @@
 			}
 		</script>
 		<tr>
-		<td>Document Type</td><td><input list="doc_type" name="doc_type" class="mytext foo" size="80"> <datalist id="doc_type">
+		<td>Document Type</td><td><input list="doc_type" name="doc_type" class="mytext foo" size="80" onchange="docTypeChanged(this.value)"> <datalist id="doc_type">
 		<?php
 			#gets all the known document types in database
-			$query = $con->query("SELECT doc_code, doc_name from doc_code_list ORDER BY doc_code_id");
+			$query = $con->query("SELECT doc_code, doc_name, doc_attrib from doc_code_list ORDER BY doc_code_id");
 			for($row_no = 0; ($query->num_rows) > $row_no; $row_no++){
 				$query->data_seek($row_no);
 				$row = $query->fetch_assoc();
@@ -110,30 +107,113 @@
 		</datalist></td>
 		</tr>
 		</table>
+		<?php
+			for($row_no = 0; ($query->num_rows) > $row_no; $row_no++){
+				$query->data_seek($row_no);
+				$row = $query->fetch_assoc();
+				$doc_attrib = json_decode($row['doc_attrib'], true);
+				$size=sizeof($doc_attrib);
+				echo '<table id="attribs'.$row['doc_code'].'" style="display:none"><tr>';
+				$i = 0;
+				for($i = 0; $i < $size; $i++){
+					echo '<td>'.$doc_attrib[$i].'</td>';
+				}
+				echo '</tr></table>';
+			}
+		?>
+		<input type="text" id="row_count_field" name="row_count_field" style="display:none">
+		<input type="text" id="doc_info_length_field" name="doc_info_length_field" style="display:none">
 		<tr>
 		<td>Attachment file</td><td><input type="file" name="attach_file" id="attach_file"></td>
 		</tr>
+		
 		<table id="additional_doc_info_table">
-		<thead>
-		<th>Information Type</th><th>Information Value</th>
-		</thead>
-		<tr>
-		<td><input type="text" name="attributeNo0" id="attributeNo0" placeholder = "Attribute0" class="mytext foo" size="80"></td>
-		<td><input type="text" name="valueNo0" id="valueNo0" placeholder="Value0" class="mytext foo" size="80"></td>
-		<td><input type="button" name="remove0" id="remove0" value="X" onclick="remove_doc_info(this)" class ="button xButton"></td>
-		</tr>
-		<tr><td></td><td></td></tr>
-		<tr>
-		<td colspan="2" align="center"><input type="button" id="button2" name="add_doc_info" value="Add Document Information" onclick="add_doc_info_function()" class="button"></td>
-		</tr>
+			<thead>
+			<th>Information Type</th><th>Information Value</th>
+			</thead>
+			<tbody>
+				<tr>
+				<td colspan="2" align="center"><input type="button" id="button2" name="add_doc_info" value="Add Document Information" onclick="add_doc_info_function()" class="button"></td>
+				<tr>
+			</tbody>
 		</table>
-		<input type="text" name="doc_info_row_count" id="row_count_field" value="1" style="display:none">
+		
+		<br>
+		<table>
+		<td><input id="button2" type="submit" name="submit" value="Add Document" class="button" onclick="this.form.submited=this.value"></td>
+		<td><input id="button2" type="submit" formaction="user_menu.html" name="cancel" value="Back" class="button" onclick="this.form.submited=this.value"></td>
+		</table>
+		</form>
 		<script type='text/javascript'>
-			var doc_info_table = document.getElementById("additional_doc_info_table");
-			var row_count;
-			row_count = 1;
-			/*function below adds 2 new textfield for info type and info value*/
+			var row_count = 0;
+			var doc_info_length = 0;
+			function docTypeChanged(docType){
+				//window.alert(String(docType + " " + attribTable.rows[0].cells.length));
+				var doc_info_table = document.getElementById("additional_doc_info_table");
+				for(var i = 0; i < doc_info_length; i++){
+					//alert("Wenthere1");
+					doc_info_table.deleteRow(1);
+					row_count--;
+				}
+				for(var j = doc_info_length; j < doc_info_length+row_count;j++){
+					//alert("wenthere1.01");
+					var attribType = document.getElementById(String("attributeNo"+String(j)));
+					attribType.setAttribute("name", "attributeNo" + String(j-doc_info_length));
+					attribType.setAttribute("id", "attributeNo" + String(j-doc_info_length));
+					attribType.setAttribute("placeholder", "Attribute" + String(j-doc_info_length));
+					//alert("wenthere1.02");
+					var attribVal = document.getElementById("valueNo" + String(j));
+					attribVal.setAttribute("name", "valueNo" + String(j-doc_info_length));
+					attribVal.setAttribute("id", "valueNo" + String(j-doc_info_length));
+					attribVal.setAttribute("placeholder", "Value" + String(j-doc_info_length));
+					//alert("wenthere1.03");
+					var removeButton = document.getElementById("remove" + String(j));
+					removeButton.setAttribute("name", "remove" + String(j-doc_info_length));
+					removeButton.setAttribute("id", "remove" + String(j-doc_info_length));
+				}
+				//alert("wenthere1.1");
+				var attribTable = document.getElementById(String("attribs"+docType));
+				//alert("wenthere1.2");
+				doc_info_length = 0;
+				document.getElementById("doc_info_length_field").setAttribute("value", "0");
+				//alert("wenthere1.3");
+				doc_info_length = attribTable.rows[0].cells.length;
+				document.getElementById("doc_info_length_field").setAttribute("value", doc_info_length);
+				//alert("wenthere1.4");
+				for(var i = 0; i < attribTable.rows[0].cells.length; i++){
+					//alert("Wenthere2");
+					var new_row = doc_info_table.insertRow(i+1);
+					//alert("Wenthere3");
+					var cell1 = new_row.insertCell(0);
+					var cell2 = new_row.insertCell(1);
+					//cell1.innerHTML = attribTable.rows[0].cells[i].innerHTML;
+					//cell2.innerHTML = "shit";
+					cell1.innerHTML = "<input type='text' name='attribute_No" + String(i) + "' id='attribute_No" + String(i) + "' placeholder='Attribute_"+ String(i) + "' value='"+attribTable.rows[0].cells[i].innerHTML+"' class='mytext foo' size='80' readonly>";
+					cell2.innerHTML = "<input type='text' name='value_No" + String(i) + "' id='value_No" + String(i) + "' placeholder = 'Value_" + String(i) + "' class='mytext foo' size='80'>";
+					row_count++;
+				}
+				//alert(String(doc_info_length));
+				//alert(String(row_count));
+				for(var j = row_count-doc_info_length-1; j >= 0; j--){
+					//alert("wenthere1.41");
+					var attribType = document.getElementById(String("attributeNo"+String(j)));
+					attribType.setAttribute("name", "attributeNo" + String(j+doc_info_length));
+					attribType.setAttribute("id", "attributeNo" + String(j+doc_info_length));
+					attribType.setAttribute("placeholder", "Attribute" + String(j+doc_info_length));
+					//alert("wenthere1.42");
+					var attribVal = document.getElementById("valueNo" + String(j));
+					attribVal.setAttribute("name", "valueNo" + String(j+doc_info_length));
+					attribVal.setAttribute("id", "valueNo" + String(j+doc_info_length));
+					attribVal.setAttribute("placeholder", "Value" + String(j+doc_info_length));
+					//alert("wenthere1.43");
+					var removeButton = document.getElementById("remove" + String(j));
+					removeButton.setAttribute("name", "remove" + String(j+doc_info_length));
+					removeButton.setAttribute("id", "remove" + String(j+doc_info_length));
+				}
+			}
 			function add_doc_info_function(){
+				//alert("here1");
+				var doc_info_table = document.getElementById("additional_doc_info_table");
 				var new_row = doc_info_table.insertRow(row_count+1);
 				var cell1 = new_row.insertCell(0);
 				var cell2 = new_row.insertCell(1);
@@ -147,12 +227,11 @@
 				var row_count_field = document.getElementById("row_count_field");
 				row_count_field.setAttribute("value", row_count);
 			}
-			
-			/*function below removes the text fields in the row the x button is clicked*/
 			function remove_doc_info(input){
+				var doc_info_table = document.getElementById("additional_doc_info_table");
 				var name = input.getAttribute("name");
 				//window.alert("Trying to find '" + name + "'" + String(row_count));
-				for(var i = 0; i < row_count; i++){
+				for(var i = doc_info_length; i < row_count; i++){
 					var row = document.getElementById("remove"+String(i));
 					//window.alert("Iterate" + String(i) + ". Comparing: " + name + ", " + row.getAttribute("name"));
 					if(!(name.localeCompare(row.getAttribute("name")))){
@@ -179,14 +258,6 @@
 					}
 				}
 			}
-		</script>
-		<br>
-		<table>
-		<td><input id="button2" type="submit" name="submit" value="Add Document" class="button" onclick="this.form.submited=this.value"></td>
-		<td><input id="button2" type="submit" formaction="user_menu.html" name="cancel" value="Back" class="button" onclick="this.form.submited=this.value"></td>
-		</table>
-		</form>
-		<script type='text/javascript'>
 			/*checks the empty fields*/
 			function checkInputs(button_clicked){
 				if(button_clicked == "Back"){
@@ -231,12 +302,6 @@
 					if(document.getElementsByName("doc_type")[0].value==""){
 						message += "Specify the document type\n";
 						if_valid = false;
-					}
-					for(var i = 0; i <row_count; i++){
-						if((!document.getElementById("attributeNo" + String(i)).value=="" && document.getElementById("valueNo" + String(i)).value=="") || (document.getElementById("attributeNo" + String(i)).value=="" && !document.getElementById("valueNo" + String(i)).value=="")){
-							message += "Additional information number " + (i+1) + " has an empty field\n";
-							if_valid = false;
-						}
 					}
 					if(!if_valid){
 						window.alert(message);
