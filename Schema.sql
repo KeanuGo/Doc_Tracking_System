@@ -4,16 +4,16 @@ use document_tracking_system;
 create table doc(
 	ID int primary key auto_increment,
 	reference_date date not null,
-    reference_no varchar(40),
-    if_incoming enum('Y', 'N') DEFAULT 'N',
-    if_od enum('Y', 'N') DEFAULT 'N',
-    attach_name varchar(50),
-    attach_image mediumblob);
+	reference_no varchar(40),
+	if_incoming enum('Y', 'N') DEFAULT 'N',
+	if_od enum('Y', 'N') DEFAULT 'N',
+	attach_name varchar(50),
+	attach_image mediumblob);
 create table doc_code_list(
 	doc_code_id int(3) primary key not null auto_increment,
 	doc_code varchar(10) not null,
-	doc_name varchar(50) not null
-  doc_attrib json);
+	doc_name varchar(50) not null,
+ 	doc_attrib json);
 	
 create table doc_info(
 	ID int,
@@ -33,13 +33,13 @@ create table doc_log(
   
 create table admin(
 	username varchar(40) not null,
-    password varchar(40) not null);
+   	password varchar(40) not null);
     
 create table users(
 	userID int(9) NOT NULL auto_increment, 
 	fullname VARCHAR(50) NOT NULL,
 	username VARCHAR(40) NOT NULL,
 	email VARCHAR(40) NOT NULL,
-	password VARCHAR(100) NOT NULL, 
-	PRIMARY KEY(userID)
-  active enum('offline','online') DEFAULT 'offline');
+	password VARCHAR(100) NOT NULL,
+	active enum('offline','online') DEFAULT 'offline',
+	PRIMARY KEY(userID));
