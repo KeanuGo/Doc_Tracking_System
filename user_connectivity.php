@@ -19,6 +19,8 @@ function SignIn()
 		global $con;
 		$query = $con->query("SELECT *  FROM users where username = '$_POST[user]' AND password = '$_POST[pass]'");
 		$row = $query->fetch_assoc();
+		$query1 = $con->query("UPDATE users set active='online' where username = '$_POST[user]' AND password = '$_POST[pass]'");
+	
 		if(!empty($row['username']) AND !empty($row['password']))
 		{
 			session_regenerate_id();
