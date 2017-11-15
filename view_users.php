@@ -19,18 +19,14 @@ if(isset($_POST["action"]))
 {
  if($_POST["action"] == "fetch_data")
  {		
-	$query= $con->query("SELECT userID, fullname, username, email FROM users");
-	echo "<div><table border= '1'><tr><td>ID</td><td>Fullname</td><td>Username</td><td>E-mail</td></tr></div>";
+	$query= $con->query("SELECT userID, fullname, username, email, active FROM users");
+	echo "<div><fieldset id = 'fs' style = 'width: 95%'><table id= 'table' border= '1'><tr><td>ID</td><td>Fullname</td><td>Username</td><td>E-mail</td></tr></div>";
 	while($row = $query->fetch_assoc())
 	{
-		$online= 'offline';
-		if( isset($_SESSION['username'])){
-			if($_SESSION['username'] == $row['username']){$online= 'online';}else{$online= 'offline';}
-			}
 		echo "<tr><td>".$row["userID"]."</td><td>".$row["fullname"]."</td><td>".$row["username"]."</td><td>".$row["email"]."</td>
-		<td>".$online."</td></tr>\n";
+		<td>".$row["active"]."</td></tr>\n";
 	}
-	echo"</table>";
+	echo"</fieldset></table>";
  }
 }
 ?>
