@@ -7,7 +7,7 @@
 	define('DB_HOST', 'localhost');
 	define('DB_NAME', 'document_tracking_system');
 	define('DB_USER','root');
-	define('DB_PASSWORD','');
+	define('DB_PASSWORD','Jethshanroyce1204');
 	
 	$con=new mysqli(DB_HOST,DB_USER,DB_PASSWORD,DB_NAME);
 	if ($con->connect_errno) {
@@ -22,6 +22,6 @@
 	if(isset($query_doc['attach_image'])){
 	echo '<img src="data:image/jpeg;base64,'. base64_encode($query_doc['attach_image']) .'"/>';
 	}else{
-		echo "No document image found";
+		echo "<text style = 'font-family: calibri light; font-size: 20px'>No document image attached.</text>";
 	}
 ?>
