@@ -1,5 +1,5 @@
+
 var err_color = "rgb(200,0,0)";
-var text = document.getElementsByClassName("text");
 
 function ValidateEnrollment() {
 	var name = document.getElementById("name").value;
@@ -9,39 +9,45 @@ function ValidateEnrollment() {
 	var cpass = document.getElementById("cpassword").value;
 	var emailExpression = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
+	var email_warning = document.getElementById("email_warning");
+	var pass_warning = document.getElementById("pass_warning");
+	var cpass_warning = document.getElementById("cpass_warning");
+	var all = document.getElementById("all");
+	var space = "&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp";
+
 	if(name != "" && uname != "" && email != "" && pass != "" && cpass != "") {
+		email_warning.innerHTML = "";
+		pass_warning.innerHTML = "";
+		cpass_warning.innerHTML = "";
+		all.innerHTML = "";
+		
 		if(email.match(emailExpression)) {
 			if(pass.length < 7) {
-				text[3].innerHTML = "Password too weak";
-				text[3].style.color = err_color;
+				pass_warning.innerHTML = space + "Password too weak";
+				pass_warning.style.color = err_color;
 				return false;
 			}else if(pass != cpass) {
-				text[4].innerHTML = "Password does not match";
-				text[4].style.color = err_color;
+				cpass_warning.innerHTML = space + "Password does not match";
+				cpass_warning.style.color = err_color;
 				return false;
 			}
 			return true;
 		}else{
-			text[1].innerHTML = "Invalid E-mail";
+			email_warning.innerHTML = space + "Invalid E-mail";
+			email_warning.style.color = err_color;
 			return false;
 		}
 	}else{
-		text[5].innerHTML = "All fields must be filled.";
-		text[5].style.color = err_color;
+		all.innerHTML = "All fields must be filled.<br><br>";
+		all.style.color = err_color;
 		return false;
 	}
 }
-/*
-function DefaultText() {
-	var tags = ["E-mail", "Username", "Password", "Confirm Password"];
-	for(var x = 1; x < 6: x++) {
-		document.getElementsByClassName("text")[x].innerHTML = tags[x];
-	}
-}*/
 
 function ValidateSignIn() {
 	var username = document.getElementsByName("user")[0].value;
 	var password = document.getElementsByName("pass")[0].value;
+	var text = document.getElementsByClassName("text");
 
 	if(username == "" && password == "") {
 		text[2].innerHTML = "Enter username and password.";
@@ -54,6 +60,27 @@ function ValidateSignIn() {
 	} else if(password == "") {
 		text[2].innerHTML = "Input Password.";
 		text[2].style.color = err_color;
+		return false;
+	} else {
+		return true;
+	}
+}
+
+function ValidateAddDocCode() {
+	var doc_code = document.getElementsByClassName("mytext foo")[0];
+	var doc_name = document.getElementsByClassName("mytext foo")[1];
+	
+	if(doc_code.value == "" || doc_name.value == "") {
+		doc_code.innerHTML = "";
+		doc_name.innerHTML = "";
+		if(doc_code.value == "") {
+			doc_code.placeholder = "Enter Doc Code First!";
+			doc_code.style.color = err_color;
+		}
+		if(doc_name.value == "") {
+			doc_name.placeholder = "Enter Doc Name First!";
+			doc_name.style.color = err_color;	
+		}
 		return false;
 	} else {
 		return true;
