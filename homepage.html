@@ -12,7 +12,7 @@
 	<body id = "background">
 		<div align = "center">
 			<img src = "images/leyeco_logo.png" id = "logo"><br>
-			<h2 style = "font-family: helvetica"> Internal Audit Document Tracking System </h2>
+			<h3 style = "font-size: 20px"> Internal Audit Document Tracking System </h3>
 			<fieldset id = "fs">
 				<form type = "submit" method = "POST" onsubmit = "return ValidateSignIn()" action = "user_connectivity.php">
 					
@@ -23,35 +23,37 @@
 					Log in as:
 					<br><br><button class = "button" formaction = "admin_connectivity.php" name = "admin"> ADMIN </button><br><br>
 					<button class = "button" name = "employee"> EMPLOYEE </button><br><br>
-					<div class="text" style="text-align: center"> </div>
 				</form>
+				<div class="text" style="text-align: center" name = "err_text"> </div>
 			</fieldset>
+
 			<script type="text/javascript">
-						tday=new Array("Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday");
-						tmonth=new Array("January","February","March","April","May","June","July","August","September","October","November","December");
+				
+				tday=new Array("Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday");
+				tmonth=new Array("January","February","March","April","May","June","July","August","September","October","November","December");
 
-						function GetClock(){
-						var d=new Date();
-						var nday=d.getDay(),nmonth=d.getMonth(),ndate=d.getDate(),nyear=d.getFullYear();
-						var nhour=d.getHours(),nmin=d.getMinutes(),nsec=d.getSeconds(),ap;
+				function GetClock(){
+					var d=new Date();
+					var nday=d.getDay(),nmonth=d.getMonth(),ndate=d.getDate(),nyear=d.getFullYear();
+					var nhour=d.getHours(),nmin=d.getMinutes(),nsec=d.getSeconds(),ap;
 
-						if(nhour==0){ap=" AM";nhour=12;}
-						else if(nhour<12){ap=" AM";}
-						else if(nhour==12){ap=" PM";}
-						else if(nhour>12){ap=" PM";nhour-=12;}
+					if(nhour==0){ap=" AM";nhour=12;}
+					else if(nhour<12){ap=" AM";}
+					else if(nhour==12){ap=" PM";}
+					else if(nhour>12){ap=" PM";nhour-=12;}
 
-						if(nmin<=9) nmin="0"+nmin;
-						if(nsec<=9) nsec="0"+nsec;
+					if(nmin<=9) nmin="0"+nmin;
+					if(nsec<=9) nsec="0"+nsec;
 
-						document.getElementById('clockbox').innerHTML=""+tday[nday]+", "+tmonth[nmonth]+" "+ndate+", "+nyear+" "+nhour+":"+nmin+":"+nsec+ap+"";
-						}
+					document.getElementById('clockbox').innerHTML=""+tday[nday]+", "+tmonth[nmonth]+" "+ndate+", "+nyear+" "+nhour+":"+nmin+":"+nsec+ap+"";
+				}
 
-						window.onload=function(){
-						GetClock();
-						setInterval(GetClock,1000);
-						}
-					</script>
-					<div id="clockbox"></div>
+				window.onload = function() {	
+					GetClock();
+					setInterval(GetClock,1000);
+				}
+			</script>
+			<br><div id="clockbox"></div>
 		</div>		
 	</body>
 
