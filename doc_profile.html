@@ -7,7 +7,7 @@
 	define('DB_HOST', 'localhost');
 	define('DB_NAME', 'document_tracking_system');
 	define('DB_USER','root');
-	define('DB_PASSWORD','');
+	define('DB_PASSWORD','Jethshanroyce1204');
 	
 	$con=new mysqli(DB_HOST,DB_USER,DB_PASSWORD,DB_NAME);
 	if ($con->connect_errno) {
@@ -17,14 +17,44 @@
 <html>
 <head>
 <link rel = "icon" href = "images/homepage.ico">
-<title>Incoming Documents Log</title>
+<title>
+<?php
+	$id= $_GET['ID'];
+
+	$querydoc_log = "SELECT * FROM doc_log where doc_ID=$id ORDER BY time_stamp DESC LIMIT 1";
+	$query_doc_log = mysqli_query($con, $querydoc_log);
+	$query_doc_log->data_seek(0);
+	$query_doc_log = $query_doc_log->fetch_assoc();
+
+	if($query_doc_log['status'] == 'IN')
+		echo 'ID '.$id.' ';
+	else if($query_doc_log['status'] == 'OUT') 
+		echo 'OD '.$id.' ';
+?>
+(Document Profile)</title>
 <link rel = "stylesheet" type = "text/css" href = "homepage-style.css">
 
 </head>
 <body id="background">
 	<nav>
 		<div align = "center">
-			<h2>USER MENU</h2>
+			<h2>DOCUMENT PROFILE
+				<!--
+				<?php
+					$id= $_GET['ID'];
+
+					$querydoc_log = "SELECT * FROM doc_log where doc_ID=$id ORDER BY time_stamp DESC LIMIT 1";
+					$query_doc_log = mysqli_query($con, $querydoc_log);
+					$query_doc_log->data_seek(0);
+					$query_doc_log = $query_doc_log->fetch_assoc();
+
+					if($query_doc_log['status'] == 'IN')
+						echo '(INCOMING)';
+					else if($query_doc_log['status'] == 'OUT') 
+						echo '(OUTGOING)';
+				?>
+			-->
+			</h2>
 			<img src = "images/leyeco_logo.png" id = "logo"><br><br>
 			<form method = "POST" action = "incoming_documents.html">
 				<button class = "button" id = "button3" formaction = "add_document.html" style = "margin-top: 10px"> Add Document </button>
@@ -35,19 +65,31 @@
 			</form>
 		</div>
 	</nav>
+
+	<style type="text/css">
+		td {
+			border-bottom: 2px solid rgb(200,200,200);
+			text-align: left;
+		}
+		#td {
+			text-align: center;
+			font-weight: bold;
+		}
+	</style>
+
 	<article id = "article">
 		<div align="center">
-		<fieldset id = "fs" style = "width: 95%">
-		<table id= "table" style="background-color:white" border="1">
+		<fieldset id = "fs" style = "width: 95%"><br>
+		<table id= "table" border="1">
 			<?php
 				$querydoc = "SELECT * FROM doc where ID=".$_GET['ID'];
 				$query_doc = mysqli_query($con, $querydoc);
 				$query_doc->data_seek(0);
 				$query_doc = $query_doc->fetch_assoc();
 				#header("Content-type: image/jpeg");
-				echo '<tr><td>Document ID</td><td>'.$query_doc['ID'].'</td></tr>';
-				echo '<tr><td>Reference Date</td><td>'.$query_doc['reference_date'].'</td></tr>';
-				echo '<tr><td>Reference Number</td><td>'.$query_doc['reference_no'].'</td></tr>';
+				echo '<tr><td id = "td">Document ID</td><td>'.$query_doc['ID'].'</td></tr>';
+				echo '<tr><td id = "td">Reference Date</td><td>'.$query_doc['reference_date'].'</td></tr>';
+				echo '<tr><td id = "td">Reference Number</td><td>'.$query_doc['reference_no'].'</td></tr>';
 				$querydoc_info = "SELECT * FROM doc_info where ID=".$_GET['ID'];
 				$query_doc_info = mysqli_query($con, $querydoc_info);
 				$query_doc_info->data_seek(0);
@@ -56,25 +98,26 @@
 				$doc_type = mysqli_query($con, $query_doc_type);
 				$doc_type->data_seek(0);
 				$doc_type = $doc_type->fetch_assoc();
-				echo '<tr><td>Document Type</td><td>'.$doc_type['doc_name'].'</td></tr>';
+				echo '<tr><td id = "td">Document Type</td><td>'.$doc_type['doc_name'].'</td></tr>';
+
 				$id= $_GET['ID'];
 				$querydoc_log = "SELECT * FROM doc_log where doc_ID=$id ORDER BY time_stamp DESC LIMIT 1";
 				$query_doc_log = mysqli_query($con, $querydoc_log);
 				$query_doc_log->data_seek(0);
 				$query_doc_log = $query_doc_log->fetch_assoc();
-				echo '<tr><td>Status</td><td>'.$query_doc_log['status'].'</td></tr>';
+				echo '<tr><td id = "td">Status</td><td>'.$query_doc_log['status'].'</td></tr>';
 				if($query_doc_log['status']=='IN'){
-					echo '<tr><td>Particulars</td><td>'.$query_doc_log['remarks_particulars'].'</td></tr>';
-					echo '<tr><td>Date Received</td><td>'.$query_doc_log['dateReceived_Transmitted'].'</td></tr>';
-					echo '<tr><td>Sender</td><td>'.$query_doc_log['sender_recipient'].'</td></tr>';
-					echo '<tr><td>Updated By</td><td>'.$query_doc_log['updated_by'].'</td></tr>';
-					echo '<tr><td>TimeStamp</td><td>'.$query_doc_log['time_stamp'].'</td></tr>';
+					echo '<tr><td id = "td">Particulars</td><td>'.$query_doc_log['remarks_particulars'].'</td></tr>';
+					echo '<tr><td id = "td">Date Received</td><td>'.$query_doc_log['dateReceived_Transmitted'].'</td></tr>';
+					echo '<tr><td id = "td">Sender</td><td>'.$query_doc_log['sender_recipient'].'</td></tr>';
+					echo '<tr><td id = "td">Updated By</td><td>'.$query_doc_log['updated_by'].'</td></tr>';
+					echo '<tr><td id = "td">TimeStamp</td><td>'.$query_doc_log['time_stamp'].'</td></tr>';
 				}else if($query_doc_log['status']=='OUT'){
-					echo '<tr><td>Remarks</td><td>'.$query_doc_log['remarks_particulars'].'</td></tr>';
-					echo '<tr><td>Date Transmitted</td><td>'.$query_doc_log['dateReceived_Transmitted'].'</td></tr>';
-					echo '<tr><td>Receiver</td><td>'.$query_doc_log['sender_recipient'].'</td></tr>';
-					echo '<tr><td>Updated By</td><td>'.$query_doc_log['updated_by'].'</td></tr>';
-					echo '<tr><td>TimeStamp</td><td>'.$query_doc_log['time_stamp'].'</td></tr>';
+					echo '<tr><td id = "td">Remarks</td><td>'.$query_doc_log['remarks_particulars'].'</td></tr>';
+					echo '<tr><td id = "td">Date Transmitted</td><td>'.$query_doc_log['dateReceived_Transmitted'].'</td></tr>';
+					echo '<tr><td id = "td">Receiver</td><td>'.$query_doc_log['sender_recipient'].'</td></tr>';
+					echo '<tr><td id = "td">Updated By</td><td>'.$query_doc_log['updated_by'].'</td></tr>';
+					echo '<tr><td id = "td">TimeStamp</td><td>'.$query_doc_log['time_stamp'].'</td></tr>';
 				}
 				
 				
@@ -82,18 +125,21 @@
 				$additional_doc_info = json_decode($query_doc_info['doc_info'], true);
 				#echo '<tr><td>'.$additional_doc_info.'</td></tr>';
 				echo '<tbody>';
-				echo '<tr><td colspan="2" align="center">Additional Document Information</td></tr>';
+				echo '<tr><td colspan = "2" id = "td">&nbsp</td></tr>';
+				#echo '<tr><td colspan="2" id = "td">Additional Document Information</td></tr>';
 				if(isset($additional_doc_info)){
 				foreach ($additional_doc_info as $key => $value) {
 					if (!is_array ($additional_doc_info[$key])) {
-					echo '<tr><td>'.$key.'</td><td>'.$additional_doc_info[$key].'</td></tr>';
+					echo '<tr><td id = "td">'.$key.'</td><td>'.$additional_doc_info[$key].'</td></tr>';
 					}
 				}
+
 				}
 				echo '</tbody>';
 			?>
-		</table>
+		</table> <br><br>
 		<input type=button class = "button" onClick=window.open("doc_image.php?ID=<?php echo $_GET['ID']?>","demo","width=1000,height=630,left=300,top=60,toolbar=0,status=0,"); value="View Document Image">
+		&nbsp&nbsp&nbsp&nbsp
 		<input type=button class = "button" onClick=window.open("history_log.php?ID=<?php echo $_GET['ID']?>","demo","width=1000,height=630,left=300,top=60,toolbar=0,status=0,"); value="Document History Log">
 		<form method = "POST" action = "update.php?ID=<?php echo $_GET['ID']?>">
 		<button class = "button" id = "button4" name="update" style = "margin-top: 30px"> Update Document </button>
