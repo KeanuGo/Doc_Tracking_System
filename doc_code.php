@@ -7,7 +7,7 @@
 	define('DB_HOST', 'localhost');
 	define('DB_NAME', 'document_tracking_system');
 	define('DB_USER','root');
-	define('DB_PASSWORD','');
+	define('DB_PASSWORD','Jethshanroyce1204');
 	$con=new mysqli(DB_HOST,DB_USER,DB_PASSWORD,DB_NAME);
 	if ($con->connect_errno) {
 		echo "Failed to connect to MySQL: (" . $con->connect_errno . ") " . $con->connect_error;
@@ -24,7 +24,8 @@
 	<body id="background">
 		<nav>
 			<div align = "center">
-				<h2>USER MENU</h2>
+				<h2>DOCUMENT CODE LIST</h2>
+				<h3>USER MENU</h3>
 				<img src = "images/leyeco_logo.png" id = "logo"><br><br>
 				<form method = "POST" action = "incoming_documents.html">
 					<button class = "button" id = "button3" formaction = "add_document.html" style = "margin-top: 10px"> Add Document </button>
@@ -35,21 +36,25 @@
 				</form>
 			</div>
 		</nav>
-		<article id = "article">
+		<div class = "div" align = "left">
 			<form method = "POST" type = "submit" align = "center" action = "doc_code_connectivity.php" onsubmit = "return ValidateAddDocCode()">
-				Document Code:&nbsp&nbsp
-				<input class = "mytext foo" id = "mytext2" type = "text" name = "document_code">
-				&nbsp&nbsp&nbsp&nbspDocument Name:&nbsp&nbsp
-				<input class = "mytext foo" id = "mytext2" type = "text" name = "document_name">
-				&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-				<button class = "button" id = "button2" name = "add-doc"> ADD </button>
+				<table align = "center">
+					<tr>
+					<td>
+						Document Code:&nbsp&nbsp
+						<input class = "mytext foo" id = "mytext2" type = "text" name = "document_code"></td>
+					<td>
+						&nbsp&nbsp&nbsp&nbspDocument Name:&nbsp&nbsp
+						<input class = "mytext foo" id = "mytext2" type = "text" name = "document_name"></td>
+					<td></td><td></td>
+					<td>
+						<button class = "button" id = "button2" name = "add-doc"> ADD </button>
+					</td></tr>
+				</table>
 			</form>
-
-			<text id = "warning_msg1" class = "text" style = "margin-left: 130px; float:left">
-			</text>
-			<text id = "warning_msg2" class = "text" style = "margin-right: 330px; float: right">
-			</text>
-
+		</div>
+		<br><br>
+		<article id = "article">
 			<div align = "center">
 				<fieldset id = "fs" style = "width: 95%">
 					<form method = "POST" type = "submit" align = "center" action = "add_doc_info.php">
@@ -60,9 +65,14 @@
 						while($row = $query->fetch_assoc())
 						{
 							$i=$i+1;
-							echo "<tr id = '".$row["doc_code_id"]."' onclick='doSomething(this)'><td id = 'tr-td'>".$row["doc_code_id"]."</td><td id = 'tr-td'>".$row["doc_code"]."</td><td id = 'tr-td'>".$row["doc_name"]."</td><tr>";
+							echo "<tr class = 'tr' id = '".$row["doc_code_id"]."' onclick='doSomething(this)'><td id = 'tr-td'>".$row["doc_code_id"]."</td><td id = 'tr-td'>".$row["doc_code"]."</td><td id = 'tr-td'>".$row["doc_name"]."</td><tr>";
 						}
 						echo"</table>";
+						if($i == 0) {
+							echo '<table id = "table"><tr>';
+							echo '<td align = "center" style = "font-size: 20px"> LIST EMPTY </td>';
+							echo '</tr></table>';
+						}
 					?>
 					<tr><td></td><td></td></tr>
 					<input type="text" name="doc_info_row_count" id="row_count_field" value="1" style="display:none">
@@ -74,22 +84,22 @@
 		
 		<script type='text/javascript'>	
 			var background= document.getElementById("table");
-			var row_count;
+			var row_count = 0;
 			//var doc_code_id;
-			row_count = 0;
 			function doSomething(row){
 				while(background.rows.length > 0) {
 					background.deleteRow(0);
 				}
 				var doc_code_id = row.getAttribute("id");
 				location.href="view_doc_code.php?id="+ doc_code_id;
+				/*
 				var addInfoRow = background.insertRow(0);
 				var cell = addInfoRow.insertCell(0);
 				background.setAttribute("style", "width:550px");
 				cell.innerHTML = "<input type='button' id='adddocbutton' name='add_doc_info' value='Add Document Information' onclick='add_doc_info_function()' class='button +Button'>";
 				cell.innerHTML = cell.innerHTML+"<text>  </text><input type='submit' id='submit' name='submit' value='Save' class='button +Button' style='width:150px'>";
 				cell.setAttribute("colspan", "2");
-				cell.setAttribute("align", "center");
+				cell.setAttribute("align", "center");*/
 				/*var new_row = background.insertRow(row_count+1);
 				var cell1 = new_row.insertCell(0);
 				var cell2 = new_row.insertCell(1);
