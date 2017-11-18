@@ -3,7 +3,7 @@
 define('DB_HOST', 'localhost');
 define('DB_NAME', 'document_tracking_system');
 define('DB_USER','root');
-define('DB_PASSWORD','');
+define('DB_PASSWORD','Jethshanroyce1204');
 
 $con=new mysqli(DB_HOST,DB_USER,DB_PASSWORD,DB_NAME);
 if ($con->connect_errno) {
@@ -13,55 +13,38 @@ if ($con->connect_errno) {
 function NewUser()
 {
 	global $con;
-	$fullname = mysqli_real_escape_string($con, $_POST['name']);
-	$userName = mysqli_real_escape_string($con,$_POST['user']);
-	$email = mysqli_real_escape_string($con,$_POST['email']);
-	$password =  mysqli_real_escape_string($con,$_POST['pass']);
+	$fullname = $_POST['name'];
+	$userName = $_POST['user'];
+	$email = $_POST['email'];
+	$password =  sha1($_POST['pass']);
+	#$hash = password_hash($_POST['pass'], PASSWORD_BCRYPT);
+
 	$query = "INSERT INTO users (fullname,username,email,password) VALUES ('$fullname','$userName','$email','$password')";
+
 	$data = mysqli_query($con,$query);
 	if($data)
 	{
-	echo "YOUR REGISTRATION IS COMPLETED...";
+		echo "YOUR REGISTRATION IS COMPLETED...";
+		header("Refresh: 2; URL=admin_menu.html");
 	}
 }
 
+
 function SignUp()
-{
-	if(!empty($_POST['user']))   //checking the 'user' name which is from Sign-Up.html, is it empty or have some text
-	{
-		global $con;
-		$query = $con->query("SELECT * FROM users WHERE username = '$_POST[user]' AND password = '$_POST[pass]'");
-		if($query){
-			if(!$row = $query->fetch_assoc())
-			{
-				if(strlen($_POST['pass'])>=7)
-				{
-					if($_POST['pass'] == $_POST['cpass'])
-					{
-						newuser();
-					}
-					else
-					{
-						echo "PASSWORD DOES NOT MATCH";
-					}
-				}
-				else
-				{
-					echo "PASSWORD MUST CONTAIN AT LEAST 7 CHARACTERS...";
-				}
-			}
-			else
-			{
-				echo "SORRY...YOU ARE ALREADY REGISTERED USER...";
-			}
-		}
-		else
-		{
-			newuser();
-		}
+{	
+	global $con;
+	$hash = sha1($_POST['pass']);
+	$query = $con->query("SELECT * FROM users WHERE username = '$_POST[user]' AND password = '$hash'");
+
+	if($query and $row = $query->fetch_assoc()) {
+		echo "SORRY...YOU ARE ALREADY REGISTERED USER...";
+		header("Refresh: 2; URL=user_enrollment.html");
+	} else {
+		newuser();
 	}
 }
-if(isset($_POST['submit']))
+
+if(isset($_POST['sign-up']))
 {
 	SignUp();
 }
