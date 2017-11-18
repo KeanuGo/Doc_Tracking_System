@@ -2,7 +2,7 @@
 define('DB_HOST', 'localhost');
 define('DB_NAME', 'document_tracking_system');
 define('DB_USER','root');
-define('DB_PASSWORD','');
+define('DB_PASSWORD','Jethshanroyce1204');
 $con=new mysqli(DB_HOST,DB_USER,DB_PASSWORD,DB_NAME);
 if ($con->connect_errno) {
     echo "Failed to connect to MySQL: (" . $con->connect_errno . ") " . $con->connect_error;
@@ -17,10 +17,9 @@ function SignIn()
 	if(!empty($_POST['user']))   //checking the 'user' name which is from Sign-In.html, is it empty or have some text
 	{
 		global $con;
-		$query = $con->query("SELECT *  FROM users where username = '$_POST[user]' AND password = '$_POST[pass]'");
+		$hash = sha1($_POST['pass']);
+		$query = $con->query("SELECT *  FROM users where username = '$_POST[user]' AND password = '$hash'");
 		$row = $query->fetch_assoc();
-		$query1 = $con->query("UPDATE users set active='online' where username = '$_POST[user]' AND password = '$_POST[pass]'");
-	
 		if(!empty($row['username']) AND !empty($row['password']))
 		{
 			session_regenerate_id();
@@ -32,7 +31,8 @@ function SignIn()
 		}
 		else
 		{
-			echo "SORRY... YOU ENTERD WRONG ID AND PASSWORD... PLEASE RETRY...";
+			echo '<center><text style = "font-family: calibri"> Username Does Not Match Password. </text></center>';
+			header("Refresh:2; URL=homepage.html");
 		}
 	}else{
 		header("Location:homepage.html");
