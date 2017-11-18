@@ -2,7 +2,7 @@
 define('DB_HOST', 'localhost');
 define('DB_NAME', 'document_tracking_system');
 define('DB_USER','root');
-define('DB_PASSWORD','');
+define('DB_PASSWORD','Jethshanroyce1204');
 $con=new mysqli(DB_HOST,DB_USER,DB_PASSWORD,DB_NAME);
 if ($con->connect_errno) {
     echo "Failed to connect to MySQL: (" . $con->connect_errno . ") " . $con->connect_error;
@@ -15,8 +15,8 @@ if(!isset($_SESSION['logined']) || $_SESSION['logined'] === FALSE || $_SESSION['
 ?>
 <html>
 	<head>
-		<link rel = "icon" href = "images/homepage.ico">
-		<title> ADD DOCUMENT </title>
+		<link rel = "icon" href = "images/doc.ico">
+		<title> ADD DOCUMENT INFO </title>
 		<link rel = "stylesheet" type = "text/css" href = "homepage-style.css">
 		<style>
 			.xButton{
@@ -45,6 +45,7 @@ if(!isset($_SESSION['logined']) || $_SESSION['logined'] === FALSE || $_SESSION['
 <body id="background">
 	<div align="center">
 	<fieldset id="fs"><legend id="legend"> &nbsp Document Form &nbsp </legend>
+		<br>
 		<form type="submit" action="doc_type.php" method="POST" onsubmit="return checkInputs(this.submited)" id="myForm" enctype="multipart/form-data">
 		<table id="additional_doc_info_table">
 		<thead>
