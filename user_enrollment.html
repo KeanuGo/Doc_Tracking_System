@@ -1,3 +1,4 @@
+
 <?php 
     session_start();
     if(!isset($_SESSION['logined']) || $_SESSION['logined'] === FALSE){
@@ -14,31 +15,43 @@
 		<link rel="stylesheet" type="text/css" href="homepage-style.css">
 		<script src = "validate.js"></script>
 	</head>
-
 	<body id="background">
 		<div align = "center">
-			<fieldset id = "fs"> 
-				<legend id = "legend"> &nbsp Registration Form &nbsp </legend><br>
+			<fieldset id = "fs" style = "width: 55%"> 
+				<legend id = "legend"> &nbsp REGISTRATION FORM &nbsp </legend><br><br>
 					<form method="POST" onsubmit = "return ValidateEnrollment()" action = "user_enroll_connectivity.php">
-						<div class = "text"> Name </div>
-						<input id = "name" placeholder = "Restituto Singaw" class = "mytext foo" type="text" name="name" size="80"> 
-						<br><br>
-						<div class = "text"> Email </div>
-						<input id = "email" placeholder = "rsingaw@gmail.com" class = "mytext foo" type="text" name="email" size="80">
-						<br><br>
-						<div class = "text"> Username </div>
-						<input id = "uname" placeholder = "Resty" class = "mytext foo" type="text" name="user" size="80">
-						<br><br>
-						<div class = "text"> Password </div>
-						<input id = "password" placeholder = "Must contain at least 7 characters" class = "mytext foo" type="password" name="pass" size="80">
-						<br><div id = "ptxt">  </div><br>
-						<div class = "text"> Confirm Password </div>
-						<input id = "cpassword" placeholder = "Re-type password" class = "mytext foo" type="password" name="cpass" size="80"><br><div id = "ctxt">  </div><br>
-
-						<button class = "button" type = "submit" name="submit"> SIGN-UP </button><br><br>
+						<table cellspacing="10">
+							<tr>
+								<td><div class = "text"> Name </div></td>
+								<td><input id = "name" placeholder = "John Lanister" class = "mytext foo enroll" type="text" name="name" size="80"> </td>
+								<td><text id = "name_warning" class = "text"></text></td>
+							</tr>
+							<tr>
+								<td><div class = "text"> E-mail </div></td>
+								<td><input id = "email" placeholder = "johnlanister_13@gmail.com" class = "mytext foo enroll" type="text" name="email" size="80"></td>
+								<td><text id = "email_warning" class = "text"></text></td>
+							</tr>
+							<tr>
+								<td><div class = "text"> Username </div></td>
+								<td><input id = "uname" placeholder = "JL" class = "mytext foo enroll" type="text" name="user" size="80"></td>
+								<td><text id = "username_warning" class = "text"></text></td>
+							</tr>
+							<tr>
+								<td><div class = "text"> Password </div></td>
+								<td><input id = "password" placeholder = "Must contain at least 7 characters" class = "mytext foo enroll" type="password" name="pass" size="80"></td>
+								<td><text id = "pass_warning" class = "text"></text></td>
+							</tr>
+							<tr>
+								<td><div class = "text"> Confirm Password &nbsp&nbsp&nbsp&nbsp</div></td>
+								<td><input id = "cpassword" placeholder = "Re-type password" class = "mytext foo enroll" type="password" name="cpass" size="80"><br><div id = "ctxt"></div></td>
+								<td><text id = "cpass_warning" class = "text"> </text></td>
+							</tr>
+						</table><br>
+						<div id = "all" class = "text" style = "text-align: center"> </div>
+						<button class = "button" type = "submit" name="sign-up"> SIGN-UP </button><br><br>
 					</form>
 					<form method = "POST" action = "admin_menu.html">
-						<button class="button" type="submit" name="submit"> BACK </button><br><br>
+						<button class="button" type="submit" name="submit"> CANCEL </button><br><br>
 					</form>
 			</fieldset>
 		</div>
