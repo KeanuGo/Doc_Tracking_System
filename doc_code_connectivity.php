@@ -3,7 +3,7 @@
 define('DB_HOST', 'localhost');
 define('DB_NAME', 'document_tracking_system');
 define('DB_USER','root');
-define('DB_PASSWORD','');
+define('DB_PASSWORD','Jethshanroyce1204');
 
 $con=new mysqli(DB_HOST,DB_USER,DB_PASSWORD,DB_NAME);
 if ($con->connect_errno) {
@@ -19,7 +19,7 @@ function NewDocCode()
 	$data = mysqli_query($con,$query);
 	if($data)
 	{
-	header("Location:doc_code.php");
+		header("Location:doc_code.php");
 	}
 }
 
@@ -36,7 +36,8 @@ function Add()
 			}
 			else
 			{
-				echo "SORRY...YOU ARE ALREADY REGISTERED USER...";
+				echo "Document Code already exists.";
+				header("Location: doc_code.php");
 			}
 		}
 		else
@@ -45,7 +46,7 @@ function Add()
 		}
 	}
 }
-if(isset($_POST['submit']))
+if(isset($_POST['add-doc']))
 {
 	Add();
 }
