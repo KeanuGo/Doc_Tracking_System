@@ -7,7 +7,7 @@
 	define('DB_HOST', 'localhost');
 	define('DB_NAME', 'document_tracking_system');
 	define('DB_USER','root');
-	define('DB_PASSWORD','');
+	define('DB_PASSWORD','Jethshanroyce1204');
 	
 	$con=new mysqli(DB_HOST,DB_USER,DB_PASSWORD,DB_NAME);
 	if ($con->connect_errno) {
@@ -17,15 +17,16 @@
 <html>
 <head>
 <link rel = "icon" href = "images/homepage.ico">
-<title>Incoming Documents Log</title>
+<title>Incoming Doc Log</title>
 <link rel = "stylesheet" type = "text/css" href = "homepage-style.css">
 
 </head>
 <body id="background">
 	<nav>
 		<div align = "center">
-			<h2>USER MENU</h2>
-			<img src = "images/leyeco_logo.png" id = "logo"><br><br>
+			<h2>INCOMING DOCUMENTS</h2>
+			<h3>USER MENU</h3>
+			<img src = "images/id.png" id = "logo"><br><br>
 			<form method = "POST" action = "incoming_documents.html">
 				<button class = "button" id = "button3" formaction = "add_document.html" style = "margin-top: 10px"> Add Document </button>
 				<button class = "button" id = "button3" style = "margin-top: 10px"> Incoming Documents </button>
@@ -35,28 +36,30 @@
 			</form>
 		</div>
 	</nav>
-	<article id = "article">
+	<div class = "div">
 		<form id="filterer" align="center" action="incoming_documents.html" onsubmit="return filterSearch()" type="submit" method="POST">
-			Date from &nbsp&nbsp
-			<input type="date" name="search_date_from" class="mytext foo" style = "width: 150px; height: 30px">
-			&nbsp&nbsp to &nbsp&nbsp
-			<input type="date" name="search_date_to" class="mytext foo" style = "width: 150px; height: 30px">
-			&nbsp&nbsp&nbsp&nbsp&nbsp&nbspDocument Type:&nbsp
-			<input list="doc_type" name="doc_type" class="mytext foo" style = "width: 150px; height: 30px"> 
-			<datalist id="doc_type">
-				<?php
-					#gets all the known document types in database
-					$query = $con->query("SELECT doc_code, doc_name from doc_code_list ORDER BY doc_code_id");
-					for($row_no = 0; ($query->num_rows) > $row_no; $row_no++){
-						$query->data_seek($row_no);
-						$row = $query->fetch_assoc();
-						echo'<option value="'.$row['doc_code'].'">'.$row['doc_name'].'</option>';
-				}?>
-			</datalist>
-			<input type="text" style="display:none" id="queryy" name="queryy">&nbsp&nbsp&nbsp&nbsp
-			<button name="searcher" class = "button" id="button2"> SEARCH </button>
+				Date from &nbsp&nbsp
+				<input type="date" name="search_date_from" class="mytext foo" style = "width: 200px; height: 30px">
+				&nbsp&nbsp to &nbsp&nbsp
+				<input type="date" name="search_date_to" class="mytext foo" style = "width: 200px; height: 30px">
+				&nbsp&nbsp&nbsp&nbsp&nbsp&nbspDocument Type:&nbsp
+				<input list="doc_type" name="doc_type" class="mytext foo" style = "width: 200px; height: 30px"> 
+				<datalist id="doc_type">
+					<?php
+						#gets all the known document types in database
+						$query = $con->query("SELECT doc_code, doc_name from doc_code_list ORDER BY doc_code_id");
+						for($row_no = 0; ($query->num_rows) > $row_no; $row_no++){
+							$query->data_seek($row_no);
+							$row = $query->fetch_assoc();
+							echo'<option value="'.$row['doc_code'].'">'.$row['doc_name'].'</option>';
+					}?>
+				</datalist>
+				<input type="text" style="display:none" id="queryy" name="queryy">&nbsp&nbsp&nbsp&nbsp
+				<button name="searcher" class = "button" id="button2"> SEARCH </button>
 		</form>
-
+	</div>
+	<br><br>
+	<article id = "article">
 		<div align="center">
 			<fieldset id = "fs" style = "width: 95%">
 				<table id="table" border="1">
@@ -75,11 +78,12 @@
 							if(isset($_POST['searcher'])){
 								$queryMain = $_POST['queryy'];
 							}
+							$counter = 0;
 							$result = mysqli_query($con,"$queryMain");
 							for($row_no = 0; ($result->num_rows) > $row_no; $row_no++){
 								$result->data_seek($row_no);
 								$row = $result->fetch_assoc();
-								echo '<tr id = "'.$row['ID'].'" onclick="doSomething(this)">';
+								echo '<tr id = "'.$row['ID'].'" class = "tr" onclick="doSomething(this)">';
 								echo '<td id = "tr-td">'.$row['Incoming_ID'].'</td>';
 								echo '<td id = "tr-td">'.$row['dateReceived_Transmitted'].'</td>';
 								echo '<td id = "tr-td">'.$row['sender_recipient'].'</td>';
@@ -87,10 +91,16 @@
 								echo '<td id = "tr-td">'.$row['reference_date'].'</td>';
 								echo '<td id = "tr-td">'.$row['remarks_particulars'].'</td>';
 								echo '</tr>';
+								$counter++;
+							}
+							if($counter == 0) {
+								echo '<table id = "table"><tr>';
+								echo '<td align = "center" style = "font-size: 20px"> LOG EMPTY </td>';
+								echo '</tr></table>';
 							}
 						?>
 					</tbody>
-				</table><br>
+				</table>
 			</fieldset>
 		</div>
 	</article>
@@ -200,62 +210,3 @@
 	</script>
 </body>
 </html>
-
-<!--
-<style>
- .table {
-	background-color: black;
-	margin-top: 10px;
-	font-family: calibri light;
-	font-weight: bold;
-	font-size: 16px;
- }
- .table_text{
-	background-color: rgb(254,254,0);
-	font-family: candara;
-	font-size: 18px;
-	
-	border-radius: 6px;
-	border-width: 2px;
-	outline: none;
-}
-.table_text2{
-	background-color: rgb(254,254,254);
-	font-family: calibri light;
-	font-size: 18px;
-	
-	border-radius: 6px;
-	border-width: 2px;
-	outline: none;
-}
-table{
-	width: 100%;
-}
-thead, tbody, tr, td, th { display: block; }
-tr:after{
-    content: ' ';
-    display: block;
-    visibility: hidden;
-    clear: both;
-}
-thead th{
-    height: 30px;
-    /*text-align: left;*/
-}
-tbody{
-    height: 460px;
-    overflow-y: auto;
-}
-thead{
-    /* fallback */
-}
-tbody td{
-    width: 16.2%;
-    float: left;
-}
-thead th{
-	width: 16.0%;
-    float: left;
-}
- 
-</style>-->
