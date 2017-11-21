@@ -7,7 +7,7 @@
 	define('DB_HOST', 'localhost');
 	define('DB_NAME', 'document_tracking_system');
 	define('DB_USER','root');
-	define('DB_PASSWORD','Jethshanroyce1204');
+	define('DB_PASSWORD','');
 	
 	$con=new mysqli(DB_HOST,DB_USER,DB_PASSWORD,DB_NAME);
 	if ($con->connect_errno) {
@@ -20,9 +20,32 @@
 		<link rel = "icon" href = "images/homepage.ico">
 		<title> ADD DOCUMENT </title>
 		<link rel = "stylesheet" type = "text/css" href = "homepage-style.css">
+		<style>
+			.xButton{
+				width: 30px;
+				height: 30px;
+				font-size: 15px;
+			}
+			.top {
+			  border-top: thin solid;
+			  border-color: black;
+			}
+			.bottom {
+			  border-bottom: thin solid;
+			  border-color: black;
+			}
+			.left {
+			  border-left: thin solid;
+			  border-color: black;
+			}
+			.right {
+			  border-right: thin solid;
+			  border-color: black;
+			}
+		</style>
 	</head>
-	<body id="background">
-		<nav>
+<body id="background">
+<nav>
 			<div align = "center">
 				<h2>DOCUMENT FORM</h2>
 				<h3>USER MENU</h3>
@@ -36,193 +59,272 @@
 				</form>
 			</div>
 		</nav>
-
-		<article>
-			<div align="center">
-			<fieldset id="fs" style = "width: 50%">
-				<p id = "status"></p>
-				<form type="submit" action="add_document.php" method="POST" onsubmit = "return ValidateDocumentForm(this.submited)" id="myForm" enctype="multipart/form-data">
-					<table cellspacing="10">
-						<tr>
-							<td>Reference Date</td>
-							<td> <input type="date" name="ref_date" class="mytext foo" size="80"></td>
-							<td> <text id = "ref_date_warning" class = "text"></text></td>
-						</tr>
-						<tr>
-							<td>Reference Number</td>
-							<td> <input type="text" name="ref_no" class="mytext foo" size="80"></td>
-							<td> <text id = "ref_no_warning" class = "text"> </text></td>
-						</tr>
-						<tr>
-							<td>Incoming/Outgoing?</td>
-							<td>
-								<input type="radio" name="in_or_od" value="Incoming" onclick="handleClick(this)" id="external_yes"> Incoming 
-								<input type="radio" name="in_or_od" value="Outgoing" onclick="handleClick(this)" id="external_no"> Outgoing
-								<input type="radio" name="in_or_od" value="not_in_or_od" checked = "checked" onclick="handleClick(this)" id="external_none"> N/A
-							</td>
-						</tr>
-						<tbody id="external_doc_form">
-							<tr>
-								<td colspan="2" align="center" id="IO_form_title">Incoming Document Form</td>
-							</tr>
-							<tr>
-								<td id="sr_label">Sender</td>
-								<td> 
-									<input id = "sender" type="text" name="sender_recipient" class="mytext foo" size="80">
-								</td>
-								<td> <text id = "doc_form_1" class = "text"> </text></td>
-							</tr>
-							<tr>
-								<td id="drt_label">Date Received</td>
-								<td> 
-									<input id = "date_received" type="date" name="date_received_transmitted" class="mytext foo" size="80">
-								</td>
-								<td> <text id = "doc_form_2" class = "text"> </text></td>
-							</tr>
-							<tr>
-								<td id="pr_label">Particulars</td>
-								<td> 
-									<input id = "particulars" type="text" name="remarks_particulars" class="mytext foo" size="80">
-								</td>
-								<td> <text id = "doc_form_3" class = "text"> </text></td>
-							</tr>
-						</tbody>
-
-						<script type='text/javascript'>
-							/*code for toggle hide or show incoming documents form shows if "Yes" is specified in "External?" hides it otherwise*/
-							var external_div = document.getElementById('external_doc_form');
-							external_div.style.display = "none";
-							function handleClick(myRadio){
-								external_div.style.display='table-row-group';
-								if(myRadio.value == "Incoming"){
-									document.getElementById("IO_form_title").innerHTML = "Incoming Document Form";
-									document.getElementById("sr_label").innerHTML = "Sender";
-									document.getElementById("drt_label").innerHTML = "Date Received";
-									document.getElementById("pr_label").innerHTML = "Particulars";
-								}else if(myRadio.value == "Outgoing"){
-									document.getElementById("IO_form_title").innerHTML = "Outgoing Document Form";
-									document.getElementById("sr_label").innerHTML = "Recipient";
-									document.getElementById("drt_label").innerHTML = "Date Transmitted";
-									document.getElementById("pr_label").innerHTML = "Remarks";
-								}else if(myRadio.value == "not_in_or_od"){
-									external_div.style.display='none';
-								}
-							}
-						</script>
-						<tr>
-							<td>Document Type</td>
-							<td>
-								<input list="doc_type" name="doc_type" class="mytext foo" size="80"> 
-								<datalist id="doc_type">
-									<?php
-										#gets all the known document types in database
-										$query = $con->query("SELECT doc_code, doc_name from doc_code_list ORDER BY doc_code_id");
-										for($row_no = 0; ($query->num_rows) > $row_no; $row_no++){
-											$query->data_seek($row_no);
-											$row = $query->fetch_assoc();
-											echo'<option value="'.$row['doc_code'].'">'.$row['doc_name'].'</option>';
-									}?>
-								</datalist>
-							</td>
-							<td> <text id = "doc_type_warning" class = "text"> </text></td>
-						</tr>
-						<tr>
-							<td>Attachment File</td>
-							<td>
-								<input type="file" name="attach_file" id="attach_file">
-							</td>
-						</tr>
-					</table>
-					
-					<br>
-					<table>
-						<tr><td><text id = "all_warning" class = "text"> </text></td></tr>
-						<tr>
-							<td><input id="button3" type="submit" name="submit" value="Add Document" class="button" onclick="this.form.submited=this.value"></td>
-						</tr>
-						<tr>
-							<td>
-							<input id="button3" type="submit" formaction="add_document.html" name="cancel" value="Cancel" class="button" style = "margin-top: 8px" onclick="this.form.submited=this.value">
-							</td>
-						</tr>
-					</table>
-				</form>
-				<script type='text/javascript'>
-					/*checks the empty fields*/
-					function ValidateDocumentForm(button_clicked) {
-						var ref_date = document.getElementsByName("ref_date")[0].value;
-						var ref_no = document.getElementsByName("ref_no")[0].value;
-						var doc_type = document.getElementsByName("doc_type")[0].value;
-
-						var sender = document.getElementById("sender").value;
-						var date_received = document.getElementById("date_received").value
-						var particulars = document.getElementById("particulars").value
-
-						var ref_date_warning= document.getElementById("ref_date_warning");
-						var ref_no_warning = document.getElementById("ref_no_warning");
-						var doc_form_1 = document.getElementById("doc_form_1");
-						var doc_form_2 = document.getElementById("doc_form_2");
-						var doc_form_3 = document.getElementById("doc_form_3");
-						var doc_type_warning = document.getElementById("doc_type_warning");
-						var all_warning = document.getElementById("all_warning");
-
-						var inc_radio = document.getElementById("external_yes");
-						var out_radio = document.getElementById("external_no");
-						var na_radio = document.getElementById("external_none");
-						
-						if(button_clicked == "Cancel"){
-							document.getElementById("myForm").reset();
-							return true;
-						}else{
-							var if_valid = true;
-							var message = "";
-							if(document.getElementsByName("ref_date")[0].value==""){
-								message += "Reference Date cannot be empty\n";
-								if_valid = false;
-							}
-							if(!(document.getElementById("external_yes").checked) && !(document.getElementById("external_no").checked) && !(document.getElementById("external_none").checked)){
-								message += "Specify if externally/internally created document or not\n";
-								if_valid = false;
-							}else if(document.getElementById("external_yes").checked || document.getElementById("external_no").checked){
-								if(document.getElementsByName("sender_recipient")[0].value==""){
-									if(document.getElementById("external_yes").checked){
-										message += "Sender cannot be empty\n";
-									}else if(document.getElementById("external_no").checked){
-										message += "Recipient cannot be empty\n";
-									}
-									if_valid = false;
-								}
-								if(document.getElementsByName("date_received_transmitted")[0].value==""){
-									if(document.getElementById("external_yes").checked){
-										message += "Date Received cannot be empty\n";
-									}else if(document.getElementById("external_no").checked){
-										message += "Date Transmitted cannot be empty\n";
-									}
-									if_valid = false;
-								}
-								if(document.getElementsByName("remarks_particulars")[0].value==""){
-									if(document.getElementById("external_yes").checked){
-										message += "Particulars cannot be empty\n";
-									}else if(document.getElementById("external_no").checked){
-										message += "Remarks cannot be empty\n";
-									}
-									if_valid = false;
-								}
-							}
-							if(document.getElementsByName("doc_type")[0].value==""){
-								message += "Specify the document type\n";
-								if_valid = false;
-							}
-							if(!if_valid){
-								window.alert(message);
-							}
-							return if_valid;
+	<div align="center">
+	<fieldset id="fs"><legend id="legend"> &nbsp Document Form &nbsp </legend>
+		<p id = "status"></p>
+		<form type="submit" action="add_document.php" method="POST" onsubmit="return checkInputs(this.submited)" id="myForm" enctype="multipart/form-data">
+		<table border="0"  cellspacing="0">
+		<tr>
+		<td>Reference date</td><td> <input type="date" name="ref_date" class="mytext foo" size="80"></td>
+		</tr>
+		<tr>
+		<td>Reference number</td><td> <input type="text" name="ref_no" class="mytext foo" size="80"></td>
+		</tr>
+		<tr>
+		<td>Incoming/Outgoing?</td><td><input type="radio" name="in_or_od" value="Incoming" onclick="handleClick(this)" id="external_yes">Incoming<input type="radio" name="in_or_od" value="Outgoing" onclick="handleClick(this)" id="external_no">Outgoing<input type="radio" name="in_or_od" value="not_in_or_od" onclick="handleClick(this)" id="external_none">N/A</td>
+		</tr>
+		<tbody id="external_doc_form">
+		<tr>
+		<td colspan="2" align="center" class="left top right" id="IO_form_title">Incoming Document Form</td>
+		</tr>
+		<tr>
+		<td class="left" id="sr_label">Sender</td><td class="right"> <input type="text" name="sender_recipient" class="mytext foo" size="80"></td>
+		</tr>
+		<tr>
+		<td class="left" id="drt_label">Date Received</td><td class="right"> <input type="date" name="date_received_transmitted" class="mytext foo" size="80"></td>
+		</tr>
+		<tr>
+		<td class="left bottom" id="pr_label">Particulars</td><td class="right bottom"> <input type="text" name="remarks_particulars" class="mytext foo" size="80"></td>
+		</tr>
+		</tbody>
+		<script type='text/javascript'>
+			/*code for toggle hide or show incoming documents form shows if "Yes" is specified in "External?" hides it otherwise*/
+			var external_div = document.getElementById('external_doc_form');
+			external_div.style.display='none';
+			function handleClick(myRadio){
+				external_div.style.display='table-row-group';
+				if(myRadio.value == "Incoming"){
+					document.getElementById("IO_form_title").innerHTML = "Incoming Document Form";
+					document.getElementById("sr_label").innerHTML = "Sender";
+					document.getElementById("drt_label").innerHTML = "Date Received";
+					document.getElementById("pr_label").innerHTML = "Particulars";
+				}else if(myRadio.value == "Outgoing"){
+					document.getElementById("IO_form_title").innerHTML = "Outgoing Document Form";
+					document.getElementById("sr_label").innerHTML = "Recipient";
+					document.getElementById("drt_label").innerHTML = "Date Transmitted";
+					document.getElementById("pr_label").innerHTML = "Remarks";
+				}else if(myRadio.value == "not_in_or_od"){
+					external_div.style.display='none';
+				}
+			}
+		</script>
+		<tr>
+		<td>Document Type</td><td><input list="doc_type" name="doc_type" class="mytext foo" size="80" oninput="docTypeChanged(this.value)"> <datalist id="doc_type">
+		<?php
+			#gets all the known document types in database
+			$query = $con->query("SELECT doc_code, doc_name, doc_attrib from doc_code_list ORDER BY doc_code_id");
+			for($row_no = 0; ($query->num_rows) > $row_no; $row_no++){
+				$query->data_seek($row_no);
+				$row = $query->fetch_assoc();
+				echo'<option value="'.$row['doc_code'].'">'.$row['doc_name'].'</option>';
+		}?>
+		</datalist></td>
+		</tr>
+		</table>
+		<?php
+			for($row_no = 0; ($query->num_rows) > $row_no; $row_no++){
+				$query->data_seek($row_no);
+				$row = $query->fetch_assoc();
+				$doc_attrib = json_decode($row['doc_attrib'], true);
+				$size=sizeof($doc_attrib);
+				echo '<table id="attribs'.$row['doc_code'].'" style="display:none"><tr>';
+				$i = 0;
+				for($i = 0; $i < $size; $i++){
+					echo '<td>'.$doc_attrib[$i].'</td>';
+				}
+				echo '</tr></table>';
+			}
+		?>
+		<input type="text" id="row_count_field" name="row_count_field" style="display:none">
+		<input type="text" id="doc_info_length_field" name="doc_info_length_field" style="display:none">
+		<tr>
+		<td>Attachment file</td><td><input type="file" name="attach_file" id="attach_file"></td>
+		</tr>
+		
+		<table id="additional_doc_info_table">
+			<thead>
+			<th>Information Type</th><th>Information Value</th>
+			</thead>
+			<tbody>
+				<tr>
+				<td colspan="2" align="center"><input type="button" id="button2" name="add_doc_info" value="Add Document Information" onclick="add_doc_info_function()" class="button"></td>
+				<tr>
+			</tbody>
+		</table>
+		
+		<br>
+		<table>
+		<td><input id="button2" type="submit" name="submit" value="Add Document" class="button" onclick="this.form.submited=this.value"></td>
+		<td><input id="button2" type="submit" formaction="user_menu.html" name="cancel" value="Back" class="button" onclick="this.form.submited=this.value"></td>
+		</table>
+		</form>
+		<script type='text/javascript'>
+			var row_count = 0;
+			var doc_info_length = 0;
+			function docTypeChanged(docType){
+				//window.alert(String(docType + " " + attribTable.rows[0].cells.length));
+				var doc_info_table = document.getElementById("additional_doc_info_table");
+				for(var i = 0; i < doc_info_length; i++){
+					//alert("Wenthere1");
+					doc_info_table.deleteRow(1);
+					row_count--;
+				}
+				for(var j = doc_info_length; j < doc_info_length+row_count;j++){
+					//alert("wenthere1.01");
+					var attribType = document.getElementById(String("attributeNo"+String(j)));
+					attribType.setAttribute("name", "attributeNo" + String(j-doc_info_length));
+					attribType.setAttribute("id", "attributeNo" + String(j-doc_info_length));
+					attribType.setAttribute("placeholder", "Attribute" + String(j-doc_info_length));
+					//alert("wenthere1.02");
+					var attribVal = document.getElementById("valueNo" + String(j));
+					attribVal.setAttribute("name", "valueNo" + String(j-doc_info_length));
+					attribVal.setAttribute("id", "valueNo" + String(j-doc_info_length));
+					attribVal.setAttribute("placeholder", "Value" + String(j-doc_info_length));
+					//alert("wenthere1.03");
+					var removeButton = document.getElementById("remove" + String(j));
+					removeButton.setAttribute("name", "remove" + String(j-doc_info_length));
+					removeButton.setAttribute("id", "remove" + String(j-doc_info_length));
+				}
+				//alert("wenthere1.1");
+				var attribTable = document.getElementById(String("attribs"+docType));
+				//alert("wenthere1.2");
+				doc_info_length = 0;
+				document.getElementById("doc_info_length_field").setAttribute("value", "0");
+				//alert("wenthere1.3");
+				doc_info_length = attribTable.rows[0].cells.length;
+				document.getElementById("doc_info_length_field").setAttribute("value", doc_info_length);
+				//alert("wenthere1.4");
+				for(var i = 0; i < attribTable.rows[0].cells.length; i++){
+					//alert("Wenthere2");
+					var new_row = doc_info_table.insertRow(i+1);
+					//alert("Wenthere3");
+					var cell1 = new_row.insertCell(0);
+					var cell2 = new_row.insertCell(1);
+					//cell1.innerHTML = attribTable.rows[0].cells[i].innerHTML;
+					//cell2.innerHTML = "shit";
+					cell1.innerHTML = "<input type='text' name='attribute_No" + String(i) + "' id='attribute_No" + String(i) + "' placeholder='Attribute_"+ String(i) + "' value='"+attribTable.rows[0].cells[i].innerHTML+"' class='mytext foo' size='80' readonly>";
+					cell2.innerHTML = "<input type='text' name='value_No" + String(i) + "' id='value_No" + String(i) + "' placeholder = 'Value_" + String(i) + "' class='mytext foo' size='80'>";
+					row_count++;
+				}
+				//alert(String(doc_info_length));
+				//alert(String(row_count));
+				for(var j = row_count-doc_info_length-1; j >= 0; j--){
+					//alert("wenthere1.41");
+					var attribType = document.getElementById(String("attributeNo"+String(j)));
+					attribType.setAttribute("name", "attributeNo" + String(j+doc_info_length));
+					attribType.setAttribute("id", "attributeNo" + String(j+doc_info_length));
+					attribType.setAttribute("placeholder", "Attribute" + String(j+doc_info_length));
+					//alert("wenthere1.42");
+					var attribVal = document.getElementById("valueNo" + String(j));
+					attribVal.setAttribute("name", "valueNo" + String(j+doc_info_length));
+					attribVal.setAttribute("id", "valueNo" + String(j+doc_info_length));
+					attribVal.setAttribute("placeholder", "Value" + String(j+doc_info_length));
+					//alert("wenthere1.43");
+					var removeButton = document.getElementById("remove" + String(j));
+					removeButton.setAttribute("name", "remove" + String(j+doc_info_length));
+					removeButton.setAttribute("id", "remove" + String(j+doc_info_length));
+				}
+			}
+			function add_doc_info_function(){
+				//alert("here1");
+				var doc_info_table = document.getElementById("additional_doc_info_table");
+				var new_row = doc_info_table.insertRow(row_count+1);
+				var cell1 = new_row.insertCell(0);
+				var cell2 = new_row.insertCell(1);
+				var cell3 = new_row.insertCell(2);
+				//var cell4 = new_row.insertCell(0);
+				cell1.innerHTML = "<input type='text' name='attributeNo" + String(row_count) + "' id='attributeNo" + String(row_count) + "' placeholder='Attribute"+ String(row_count) + "' class='mytext foo' size='80'>";
+				cell2.innerHTML = "<input type='text' name='valueNo" + String(row_count) + "' id='valueNo" + String(row_count) + "' placeholder = 'Value" + String(row_count) + "' class='mytext foo' size='80'>";
+				cell3.innerHTML = "<input type='button' name='remove" + String(row_count) + "' id='remove" + String(row_count) + "' value='X' onclick='remove_doc_info(this)' class ='button xButton'>";
+				//cell4.innerHTML = "Row " + String(row_count);
+				row_count++;
+				var row_count_field = document.getElementById("row_count_field");
+				row_count_field.setAttribute("value", row_count);
+			}
+			function remove_doc_info(input){
+				var doc_info_table = document.getElementById("additional_doc_info_table");
+				var name = input.getAttribute("name");
+				//window.alert("Trying to find '" + name + "'" + String(row_count));
+				for(var i = doc_info_length; i < row_count; i++){
+					var row = document.getElementById("remove"+String(i));
+					//window.alert("Iterate" + String(i) + ". Comparing: " + name + ", " + row.getAttribute("name"));
+					if(!(name.localeCompare(row.getAttribute("name")))){
+						//window.alert("Removing row " + i + ", Row count = " + row_count);
+						for(var j = i; j < row_count-1; j++){
+							var attribType = document.getElementById("attributeNo" + String(j+1));
+							attribType.setAttribute("name", "attributeNo" + String(j));
+							attribType.setAttribute("id", "attributeNo" + String(j));
+							attribType.setAttribute("placeholder", "Attribute" + String(j));
+							var attribVal = document.getElementById("valueNo" + String(j+1));
+							attribVal.setAttribute("name", "valueNo" + String(j));
+							attribVal.setAttribute("id", "valueNo" + String(j));
+							attribVal.setAttribute("placeholder", "Value" + String(j));
+							var removeButton = document.getElementById("remove" + String(j+1));
+							removeButton.setAttribute("name", "remove" + String(j));
+							removeButton.setAttribute("id", "remove" + String(j));
 						}
-						
+						doc_info_table.deleteRow(i+1);
+						row_count--;
+						var row_count_field = document.getElementById("row_count_field");
+						row_count_field.setAttribute("value", row_count);
+						//window.alert("Removed row " + i + ", New row count = " + row_count);
+						break;
 					}
-				</script>
-			</fieldset>
-		</div>
-	</article>
-	</body>
+				}
+			}
+			/*checks the empty fields*/
+			function checkInputs(button_clicked){
+				if(button_clicked == "Back"){
+					document.getElementById("myForm").reset();
+					return true;
+				}else{
+					var if_valid = true;
+					var message = "";
+					if(document.getElementsByName("ref_date")[0].value==""){
+						message += "Reference Date cannot be empty\n";
+						if_valid = false;
+					}
+					if(!(document.getElementById("external_yes").checked) && !(document.getElementById("external_no").checked) && !(document.getElementById("external_none").checked)){
+						message += "Specify if externally/internally created document or not\n";
+						if_valid = false;
+					}else if(document.getElementById("external_yes").checked || document.getElementById("external_no").checked){
+						if(document.getElementsByName("sender_recipient")[0].value==""){
+							if(document.getElementById("external_yes").checked){
+								message += "Sender cannot be empty\n";
+							}else if(document.getElementById("external_no").checked){
+								message += "Recipient cannot be empty\n";
+							}
+							if_valid = false;
+						}
+						if(document.getElementsByName("date_received_transmitted")[0].value==""){
+							if(document.getElementById("external_yes").checked){
+								message += "Date Received cannot be empty\n";
+							}else if(document.getElementById("external_no").checked){
+								message += "Date Transmitted cannot be empty\n";
+							}
+							if_valid = false;
+						}
+						if(document.getElementsByName("remarks_particulars")[0].value==""){
+							if(document.getElementById("external_yes").checked){
+								message += "Particulars cannot be empty\n";
+							}else if(document.getElementById("external_no").checked){
+								message += "Remarks cannot be empty\n";
+							}
+							if_valid = false;
+						}
+					}
+					if(document.getElementsByName("doc_type")[0].value==""){
+						message += "Specify the document type\n";
+						if_valid = false;
+					}
+					if(!if_valid){
+						window.alert(message);
+					}
+					return if_valid;
+				}
+			}
+		</script>
+	</fieldset>
+	</div>
+</body>
 </html>
