@@ -2,7 +2,7 @@
 define('DB_HOST', 'localhost');
 define('DB_NAME', 'document_tracking_system');
 define('DB_USER','root');
-define('DB_PASSWORD','Jethshanroyce1204');
+define('DB_PASSWORD','');
 $con=new mysqli(DB_HOST,DB_USER,DB_PASSWORD,DB_NAME);
 if ($con->connect_errno) {
     echo "Failed to connect to MySQL: (" . $con->connect_errno . ") " . $con->connect_error;
@@ -20,6 +20,7 @@ function SignIn()
 		$hash = sha1($_POST['pass']);
 		$query = $con->query("SELECT *  FROM users where username = '$_POST[user]' AND password = '$hash'");
 		$row = $query->fetch_assoc();
+		$query1 = $con->query("UPDATE users set active='online' where username = '$_POST[user]' AND password ='$hash'");
 		if(!empty($row['username']) AND !empty($row['password']))
 		{
 			session_regenerate_id();
