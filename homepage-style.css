@@ -5,7 +5,7 @@ article {
     font-family: calibri;
     /*overflow-y: auto;*/
     /*max-height:610px;*/
-    height: 100%;
+    height: 80%;
 }
 
 body {
@@ -24,7 +24,6 @@ body {
 	width: 280px;
 	height: 40px;
 
-	display: inline-block;
 	font-family: calibri light;
 	font-weight: bold;
 	font-size: 20px;
@@ -104,9 +103,8 @@ body {
 
 #fs {
 	background: linear-gradient(to top, rgb(220,220,220), rgb(255,255,255));
+	margin: auto;
 	margin-top: 30px;
-	margin-bottom: 10px;
-	margin-left: 10px;
 	
 	box-shadow: 0 0 10px rgb(170,170,170);
 	border: 3px solid rgb(200,200,200);
@@ -122,7 +120,6 @@ h2 {
 	text-align: center;
 	background: radial-gradient(ellipse at center, rgb(0,0,0), rgb(0,0,0), rgb(60,60,60), rgb(80,80,80));
 	box-shadow: 0 8px rgb(40,40,40);
-	/*background-color: black;*/
 	color: yellow;
 
 	font-family: calibri light;
@@ -186,6 +183,7 @@ h3 {
 nav {
 	/*background: linear-gradient(to top, rgb(245,245,245), rgb(200,200,200));*/
 	background: radial-gradient(ellipse at center, rgb(255,255,255), rgb(255,255,255), rgb(220,220,220), rgb(200,200,200));
+	box-shadow: 0 0 10px rgb(158,202,237);
     float: left;
     max-width: 202px;
     height: 100%;
